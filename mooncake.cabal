@@ -1,0 +1,61 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: f3bf90c4c9523c545a7383f66bc92ae7d41d56e15d4fe35c77d245be45775640
+
+name:           mooncake
+version:        0.1.0.0
+description:    Please see the README on GitHub at https://github.com/yurtsiv/mooncake/blob/master/README.md
+homepage:       https://github.com/yurtsiv/mooncake#readme
+bug-reports:    https://github.com/yurtsiv/mooncake/issues
+author:         Stepan Yurtsiv
+maintainer:     stepan.yurtsiv@gmail.com
+copyright:      2020 Stepan Yurtsiv
+license:        BSD3
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/yurtsiv/mooncake
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_mooncake
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
+
+executable mooncake-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_mooncake
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , mooncake
+  default-language: Haskell2010
+
+test-suite mooncake-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_mooncake
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , mooncake
+  default-language: Haskell2010
