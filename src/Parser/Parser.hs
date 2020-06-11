@@ -3,10 +3,7 @@ module Parser.Parser where
 import Text.ParserCombinators.Parsec hiding (spaces)
 import Parser.AST (MCValue(..), AST(..))
 
-readProgramm :: String -> String
-readProgramm input = case parse parseProgram "MoonCake" input of
-  Left err -> "Error: " ++ show err
-  Right val -> show val
+parseProgramm = parse programmParser "MoonCake"
 
 parseIdentifier :: Parser String
 parseIdentifier = many1 letter
@@ -37,5 +34,5 @@ parseVariableDeclaration = do string "let "
                               val <- parseMCValue
                               return $ ValueDeclaration identifier val
 
-parseProgram :: Parser AST
-parseProgram = parseVariableDeclaration
+programmParser :: Parser AST
+programmParser = parseVariableDeclaration

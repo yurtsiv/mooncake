@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 8f00191d7256722283682e694a32a29660bdd94bca4ad464b2bfd71ea468ff98
+-- hash: dcf359494ac33d935072c5699f68864e5f1c1a06be35cec6d99e9c6a5b035979
 
 name:           mooncake
 version:        0.1.0.0
@@ -54,12 +54,15 @@ test-suite mooncake-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Parser.ParserSpec
       Paths_mooncake
   hs-source-dirs:
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , hspec
     , mooncake
     , parsec
+    , raw-strings-qq
   default-language: Haskell2010

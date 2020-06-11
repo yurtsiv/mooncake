@@ -1,8 +1,13 @@
 module Main where
 
-import Parser.Parser (readProgramm)
+import Parser.Parser
 import System.Environment
 
 main :: IO ()
-main = do args <- getArgs
-          putStrLn (readProgramm $ args !! 0)
+main = do
+  args <- getArgs
+  let text = args !! 0
+  putStrLn $
+    case parseProgramm text of
+      Left err -> "Error: " ++ show err
+      Right val -> show val
