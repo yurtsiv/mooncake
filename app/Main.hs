@@ -1,6 +1,8 @@
 module Main where
 
-import Lib
+import Parser.Parser (readProgramm)
+import System.Environment
 
 main :: IO ()
-main = someFunc
+main = do args <- getArgs
+          putStrLn (readProgramm $ args !! 0)
