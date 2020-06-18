@@ -1,5 +1,5 @@
 # General things
-* Purely functional
+* Functional (at least mostly)
 * Everything is an expression (i.e. evaluates to something)
 * Every function is curried
 * Tab sensitive
