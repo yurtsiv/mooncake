@@ -29,16 +29,19 @@ escapedChars = do
 parseMCValue :: Parser MCValue
 parseMCValue = parseString
 
-parseVariableDeclaration :: Parser AST
-parseVariableDeclaration = do 
+parseValDeclaration :: Parser AST
+parseValDeclaration = do 
    string "let "
    identifier <- parseIdentifier
    string " = "
    val <- parseMCValue
-   return $ ValueDeclaration identifier val
+   return $ ValDeclaration identifier val
 
 programmParser :: Parser AST
 programmParser = do
    skipMany $ oneOf ['\n', '\t', ' ']
-   var <- parseVariableDeclaration
-   return var
+   vars <- many $ do
+      var <- parseValDeclaration
+      char '\n'
+      return var
+   return $ Programm vars

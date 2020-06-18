@@ -14,6 +14,7 @@ data MCValue =
 
 data AST =
     MCValue
-  | ValueDeclaration String MCValue
+  | ValDeclaration String MCValue
   | FunctionDeclaration String AST
+  | Programm [AST]
   deriving (Show)

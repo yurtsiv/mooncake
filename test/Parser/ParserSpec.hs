@@ -9,7 +9,8 @@ import Test.Hspec
 import Text.RawString.QQ
 
 validProgramm = [r|
-let string = "hello"
+let stringOne = "hello"
+let stringTwo = "new string"
 |]
 
 invalidProgramms =
@@ -19,24 +20,23 @@ invalidProgramms =
   ]
 
 
-
 testIncorrectProgramm :: String -> Spec
 testIncorrectProgramm programm =
   it programm $ do
     case parseProgramm programm of
-      Left err ->  True `shouldBe` True 
-      Right val -> expectationFailure $ show val
+      Left err ->  True
+      Right val -> False
 
 testCorrectProgramm :: String -> Spec
 testCorrectProgramm programm =
   it programm $ do
     case parseProgramm programm of
       Left err -> expectationFailure $ show err
-      Right val -> True `shouldBe` True 
+      Right val -> putStrLn $ show val
 
 spec :: Spec
 spec = do
-  describe "valid programms" $ do
+  describe "valid programm" $ do
     testCorrectProgramm validProgramm
 
   describe "invalid progamms" $ do
