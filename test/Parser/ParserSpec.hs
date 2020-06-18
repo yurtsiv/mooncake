@@ -9,7 +9,7 @@ import Test.Hspec
 import Text.RawString.QQ
 
 validProgramm = [r|
-let stringOne = "hello"
+let string1 = "hello"
 let stringTwo = "new string"
 |]
 

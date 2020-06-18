@@ -6,7 +6,10 @@ import Parser.AST (MCValue(..), AST(..))
 parseProgramm = parse programmParser "MoonCake"
 
 parseIdentifier :: Parser String
-parseIdentifier = many1 letter
+parseIdentifier = do
+   head <- letter
+   rest <- many (digit <|> letter)
+   return $ [head] ++ rest
 
 parseString :: Parser MCValue
 parseString = do
