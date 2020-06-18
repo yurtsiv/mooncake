@@ -21,8 +21,11 @@ parseString = do
 
 parseInt :: Parser MCValue
 parseInt = do
+   sign <- option '+' (char '-')
    digits <- many1 digit
-   return $ (Integer . read) digits
+   return $ case sign of
+      '+' -> (Integer . read) digits
+      '-' -> (Integer . (* (-1)) . read) digits
 
 parseBool :: Parser MCValue
 parseBool = do

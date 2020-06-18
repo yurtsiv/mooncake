@@ -9,7 +9,8 @@ import Text.RawString.QQ
 validProgramm = [r|
 let string1 = "hello"
 let stringTwo = "new string"
-let integer = 123
+let positiveInt = 123
+let negativeInt = -123
 let booleanT = True
 let booleanF = False
 let emptyList = []
