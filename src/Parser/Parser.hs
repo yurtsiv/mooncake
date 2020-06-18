@@ -18,6 +18,11 @@ parseString = do
    char '"'
    return $ String (concat x)
 
+parseInt :: Parser MCValue
+parseInt = do
+   digits <- many1 digit
+   return $ (Integer . read) digits
+
 escapedChars :: Parser String
 escapedChars = do
    char '\\'
@@ -30,7 +35,9 @@ escapedChars = do
       't' -> "\t"
 
 parseMCValue :: Parser MCValue
-parseMCValue = parseString
+parseMCValue =
+   try parseString
+   <|> try parseInt
 
 parseValDeclaration :: Parser AST
 parseValDeclaration = do 

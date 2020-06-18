@@ -11,6 +11,7 @@ import Text.RawString.QQ
 validProgramm = [r|
 let string1 = "hello"
 let stringTwo = "new string"
+let integer = 123
 |]
 
 invalidProgramms =
