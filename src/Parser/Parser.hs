@@ -1,7 +1,8 @@
 module Parser.Parser where
 
 import Text.ParserCombinators.Parsec hiding (spaces)
-import Parser.AST (MCValue(..), AST(..))
+import Text.Parsec.Char
+import Parser.AST
 
 parseProgramm = parse programmParser "MoonCake"
 
@@ -30,6 +31,45 @@ parseBool = do
       "True" -> Bool True
       "False" -> Bool False
 
+parseListItemLiteral :: Parser ListItem
+parseListItemLiteral = do
+   val <- parseMCValue
+   return $ Literal val
+
+parseListItemIdentifier :: Parser ListItem
+parseListItemIdentifier = do
+   id <- parseIdentifier
+   return $ Identifier id
+
+parseListItem :: Parser ListItem
+parseListItem = 
+   try parseListItemLiteral
+   <|> parseListItemIdentifier
+
+parseInnerListItem :: Parser ListItem
+parseInnerListItem = do
+   spaces
+   item <- parseListItem
+   spaces
+   char ','
+   spaces
+   return item 
+
+parseLastListItem :: Parser ListItem
+parseLastListItem = do
+   spaces
+   item <- parseListItem
+   spaces
+   return item
+
+parseList :: Parser MCValue
+parseList = do
+   char '['
+   elems <- many ((try parseInnerListItem) <|> parseLastListItem)
+   char ']'
+   return $ List elems
+
+
 escapedChars :: Parser String
 escapedChars = do
    char '\\'
@@ -46,6 +86,7 @@ parseMCValue =
    try parseString
    <|> try parseInt
    <|> try parseBool
+   <|> try parseList
 
 parseValDeclaration :: Parser AST
 parseValDeclaration = do 
@@ -57,9 +98,9 @@ parseValDeclaration = do
 
 programmParser :: Parser AST
 programmParser = do
-   skipMany $ oneOf ['\n', '\t', ' ']
+   spaces
    vars <- many $ do
       var <- parseValDeclaration
-      char '\n'
+      spaces
       return var
    return $ Programm vars

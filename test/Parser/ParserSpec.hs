@@ -1,7 +1,5 @@
 {-# LANGUAGE QuasiQuotes #-}
-
 module Parser.ParserSpec (spec) where
-
 import Data.Either
 import Parser.Parser
 import System.IO
@@ -14,6 +12,12 @@ let stringTwo = "new string"
 let integer = 123
 let booleanT = True
 let booleanF = False
+let regularList = [1, 2, 3]
+let multilineList = [
+  "s1",
+  "s2","s3", "s4"
+  string1
+]
 |]
 
 invalidProgramms =
