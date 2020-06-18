@@ -43,8 +43,8 @@ parseListItemIdentifier = do
 
 parseListItem :: Parser ListItem
 parseListItem = 
-   try parseListItemLiteral
-   <|> parseListItemIdentifier
+   try parseListItemIdentifier
+   <|> parseListItemLiteral
 
 parseInnerListItem :: Parser ListItem
 parseInnerListItem = do
@@ -52,7 +52,6 @@ parseInnerListItem = do
    item <- parseListItem
    spaces
    char ','
-   spaces
    return item 
 
 parseLastListItem :: Parser ListItem
@@ -60,14 +59,38 @@ parseLastListItem = do
    spaces
    item <- parseListItem
    spaces
+   optional $ char ','
    return item
 
-parseList :: Parser MCValue
-parseList = do
+parseEmptyList :: Parser MCValue
+parseEmptyList = do
    char '['
-   elems <- many ((try parseInnerListItem) <|> parseLastListItem)
+   spaces
    char ']'
-   return $ List elems
+   return $ List []
+
+parseSingleItemList :: Parser MCValue
+parseSingleItemList = do
+   char '['
+   spaces
+   item <- parseLastListItem
+   spaces
+   char ']'
+   return $ List [item]
+
+parseManyItemsList :: Parser MCValue
+parseManyItemsList = do
+   char '['
+   init <- many1 (try parseInnerListItem)
+   last <- parseLastListItem
+   char ']'
+   return $ List (init ++ [last])
+
+parseList :: Parser MCValue
+parseList =
+   try parseEmptyList
+   <|> try parseSingleItemList
+   <|> parseManyItemsList
 
 
 escapedChars :: Parser String

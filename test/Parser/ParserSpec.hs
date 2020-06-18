@@ -12,22 +12,20 @@ let stringTwo = "new string"
 let integer = 123
 let booleanT = True
 let booleanF = False
-let regularList = [1, 2, 3]
-let multilineList = [
-  "s1",
-  "s2","s3", "s4"
-  string1
-]
-let multiDimList = [
+let emptyList = []
+let oneItemList = [ 1 ]
+let multipleItemsList = [1, 2, 3]
+let multidimList = [
   [1, 2, 3],
-  [1, 3, 4]
+  [4, 5, 6]
 ]
 |]
 
 invalidProgramms =
   [ "let"
   , "let val"
-  , [r|let string = "|]
+  , "let string = \""
+  , "let arr = [1 2]"
   ]
 
 
@@ -35,8 +33,8 @@ testIncorrectProgramm :: String -> Spec
 testIncorrectProgramm programm =
   it programm $ do
     case parseProgramm programm of
-      Left err ->  True
-      Right val -> False
+      Left err -> putStrLn $ show err
+      Right val -> expectationFailure $ show val
 
 testCorrectProgramm :: String -> Spec
 testCorrectProgramm programm =
