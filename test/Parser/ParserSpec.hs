@@ -10,6 +10,7 @@ validProgramm = [r|
 let string1 = "hello"
 let stringTwo = "new string"
 let positiveInt = 123
+let intCopy = positiveInt
 let negativeInt = -123
 let booleanT = True
 let booleanF = False

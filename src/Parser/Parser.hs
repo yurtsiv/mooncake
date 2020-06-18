@@ -34,20 +34,20 @@ parseBool = do
       "True" -> Bool True
       "False" -> Bool False
 
-parseListItemLiteral :: Parser ListItem
-parseListItemLiteral = do
+parseReferenceLiteral :: Parser Reference
+parseReferenceLiteral = do
    val <- parseMCValue
    return $ Literal val
 
-parseListItemIdentifier :: Parser ListItem
-parseListItemIdentifier = do
+parseReferenceIdentifier :: Parser Reference
+parseReferenceIdentifier = do
    id <- parseIdentifier
    return $ Identifier id
 
-parseListItem :: Parser ListItem
-parseListItem = 
-   try parseListItemIdentifier
-   <|> parseListItemLiteral
+parseReference :: Parser Reference
+parseReference = 
+   try parseReferenceIdentifier
+   <|> parseReferenceLiteral
 
 listItemSep :: Parser ()
 listItemSep = do
@@ -59,7 +59,7 @@ parseList :: Parser MCValue
 parseList = do
    char '['
    spaces
-   items <- parseListItem `sepEndBy` (try listItemSep)
+   items <- parseReference `sepEndBy` (try listItemSep)
    spaces
    char ']'
    return $ List items
@@ -87,8 +87,8 @@ parseValDeclaration = do
    string "let "
    identifier <- parseIdentifier
    string " = "
-   val <- parseMCValue
-   return $ ValDeclaration identifier val
+   ref <- parseReference
+   return $ ValDeclaration identifier ref
 
 programmParser :: Parser AST
 programmParser = do
