@@ -12,14 +12,14 @@ parseIdentifier = do
    rest <- many (digit <|> letter)
    return $ [head] ++ rest
 
-parseString :: Parser MCValue
+parseString :: Parser MCLiteral
 parseString = do
    char '"'
    x <- many $ escapedChars <|> many1 (noneOf ['"', '\\'])
    char '"'
    return $ String (concat x)
 
-parseInt :: Parser MCValue
+parseInt :: Parser MCLiteral
 parseInt = do
    sign <- option '+' (char '-')
    digits <- many1 digit
@@ -27,7 +27,7 @@ parseInt = do
       '+' -> (Integer . read) digits
       '-' -> (Integer . (* (-1)) . read) digits
 
-parseBool :: Parser MCValue
+parseBool :: Parser MCLiteral
 parseBool = do
    bool <- (string "True") <|> (string "False")
    return $ case bool of
@@ -36,7 +36,7 @@ parseBool = do
 
 parseReferenceLiteral :: Parser Reference
 parseReferenceLiteral = do
-   val <- parseMCValue
+   val <- parseMCLiteral
    return $ Literal val
 
 parseReferenceIdentifier :: Parser Reference
@@ -55,7 +55,7 @@ listItemSep = do
    char ','
    spaces
 
-parseList :: Parser MCValue
+parseList :: Parser MCLiteral
 parseList = do
    char '['
    spaces
@@ -75,26 +75,26 @@ escapedChars = do
       'r' -> "\r"
       't' -> "\t"
 
-parseMCValue :: Parser MCValue
-parseMCValue =
+parseMCLiteral :: Parser MCLiteral
+parseMCLiteral =
    try parseString
    <|> try parseInt
    <|> try parseBool
    <|> try parseList
 
-parseValDeclaration :: Parser AST
-parseValDeclaration = do 
+parseVarDeclaration :: Parser AST
+parseVarDeclaration = do 
    string "let "
    identifier <- parseIdentifier
    string " = "
    ref <- parseReference
-   return $ ValDeclaration identifier ref
+   return $ VarDeclaration identifier ref
 
-programmParser :: Parser AST
+programmParser :: Parser Programm
 programmParser = do
    spaces
    vars <- many $ do
-      var <- parseValDeclaration
+      var <- parseVarDeclaration
       spaces
       return var
-   return $ Programm vars
+   return vars

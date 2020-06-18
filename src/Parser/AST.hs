@@ -1,22 +1,23 @@
 module Parser.AST where
 
 data Reference =
-    Literal MCValue
+    Literal MCLiteral
   | Identifier String
   deriving (Show)
 
-data MCValue =
+data MCLiteral =
     Float Double
   | Integer Integer
   | String String
   | Bool Bool
   | List [Reference]
-  | Tuple [MCValue]
+  | Tuple [MCLiteral]
   deriving (Show)
 
 data AST =
-    MCValue
-  | ValDeclaration String Reference
-  | FunctionDeclaration String AST
-  | Programm [AST]
+    MCLiteral
+  | VarDeclaration String Reference
+  | FuncDeclaration String AST
   deriving (Show)
+
+type Programm = [AST]
