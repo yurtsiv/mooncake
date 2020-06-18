@@ -15,9 +15,10 @@ let booleanF = False
 let emptyList = []
 let oneItemList = [ 1 ]
 let multipleItemsList = [1, 2, 3]
-let multidimList = [
-  [1, 2, 3],
-  [4, 5, 6]
+let weirdMultiDimList = [
+  [1, 2,   
+   3, ],
+  [4, 5, 6],
 ]
 |]
 
