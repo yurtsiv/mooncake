@@ -23,6 +23,13 @@ parseInt = do
    digits <- many1 digit
    return $ (Integer . read) digits
 
+parseBool :: Parser MCValue
+parseBool = do
+   bool <- (string "True") <|> (string "False")
+   return $ case bool of
+      "True" -> Bool True
+      "False" -> Bool False
+
 escapedChars :: Parser String
 escapedChars = do
    char '\\'
@@ -38,6 +45,7 @@ parseMCValue :: Parser MCValue
 parseMCValue =
    try parseString
    <|> try parseInt
+   <|> try parseBool
 
 parseValDeclaration :: Parser AST
 parseValDeclaration = do 

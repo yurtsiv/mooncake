@@ -12,6 +12,8 @@ validProgramm = [r|
 let string1 = "hello"
 let stringTwo = "new string"
 let integer = 123
+let booleanT = True
+let booleanF = False
 |]
 
 invalidProgramms =
