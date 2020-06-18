@@ -8,7 +8,9 @@ import System.IO
 import Test.Hspec
 import Text.RawString.QQ
 
-validProgramm = [r|let string = "hello"|]
+validProgramm = [r|
+let string = "hello"
+|]
 
 invalidProgramms =
   [ "let"
