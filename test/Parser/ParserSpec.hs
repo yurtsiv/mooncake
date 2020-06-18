@@ -18,6 +18,10 @@ let multilineList = [
   "s2","s3", "s4"
   string1
 ]
+let multiDimList = [
+  [1, 2, 3],
+  [1, 3, 4]
+]
 |]
 
 invalidProgramms =
