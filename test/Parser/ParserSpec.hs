@@ -10,18 +10,26 @@ validProgramm = [r|
 let string1 = "hello"
 let stringTwo = "new string"
 let positiveInt = 123
-let intCopy = positiveInt
+let intCopy = positiveInt # comment here no problems
+
+# multili#ne 
+# comment
+
 let negativeInt = -123
 let booleanT = True
 let booleanF = False
 let emptyList = []
 let oneItemList = [ 1 ]
 let multipleItemsList = [1, 2, 3]
+
 let weirdMultiDimList = [
   [1, 2,   
    3, ],
   [4, 5, 6],
 ]
+
+# comment at the end of the file
+
 |]
 
 invalidProgramms =

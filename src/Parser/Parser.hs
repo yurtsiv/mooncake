@@ -82,7 +82,7 @@ parseMCLiteral =
    <|> try parseBool
    <|> try parseList
 
-parseVarDeclaration :: Parser AST
+parseVarDeclaration :: Parser Component
 parseVarDeclaration = do 
    string "let "
    identifier <- parseIdentifier
@@ -90,11 +90,24 @@ parseVarDeclaration = do
    ref <- parseReference
    return $ VarDeclaration identifier ref
 
+parseComment :: Parser Component
+parseComment = do
+   char '#'
+   comment <- manyTill anyChar (try (char '\n'))
+   return Noop
+
+parseComponent :: Parser Component
+parseComponent =
+   try parseVarDeclaration
+   <|> try parseComment
+
 programmParser :: Parser Programm
 programmParser = do
    spaces
-   vars <- many $ do
-      var <- parseVarDeclaration
+   comps <- many $ do
       spaces
-      return var
-   return vars
+      comp <- parseComponent
+      spaces
+      return comp
+   eof
+   return comps

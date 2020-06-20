@@ -14,10 +14,11 @@ data MCLiteral =
   | Tuple [MCLiteral]
   deriving (Show)
 
-data AST =
+data Component =
     MCLiteral
   | VarDeclaration String Reference
-  | FuncDeclaration String AST
+  | FuncDeclaration String Component
+  | Noop
   deriving (Show)
 
-type Programm = [AST]
+type Programm = [Component]
