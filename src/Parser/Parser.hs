@@ -1,8 +1,9 @@
 module Parser.Parser where
 
-import Text.ParserCombinators.Parsec hiding (spaces)
+import Text.ParserCombinators.Parsec
 import Text.Parsec.Char
 import Parser.AST
+import Parser.Utils
 
 parseProgramm = parse programmParser "MoonCake"
 
@@ -92,6 +93,7 @@ parseDeclaration = do
 
 parseComment :: Parser Component
 parseComment = do
+   hSpaces
    char '#'
    comment <- manyTill anyChar (try (char '\n'))
    return Noop
@@ -103,11 +105,11 @@ parseComponent =
 
 programmParser :: Parser Programm
 programmParser = do
-   spaces
    comps <- many $ do
-      spaces
+      newlines
       comp <- parseComponent
-      spaces
+      newlines
       return comp
+
    eof
    return comps

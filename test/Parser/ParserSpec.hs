@@ -12,8 +12,11 @@ let stringTwo = "new string"
 let positiveInt = 123
 let intCopy = positiveInt # comment here no problems
 
-# multili#ne 
+# multiline 
 # comment
+
+  # comments ignore
+ # indentation
 
 let negativeInt = -123
 let booleanT = True
@@ -35,8 +38,15 @@ let weirdMultiDimList = [
 invalidProgramms =
   [ "let"
   , "let val"
+
+  -- Missing closing quote
   , "let string = \""
+
+  -- Missing comma
   , "let arr = [1 2]"
+
+  -- Incorrect indentation
+  , " let something = 1"
   ]
 
 
