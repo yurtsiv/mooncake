@@ -12,14 +12,14 @@ parseIdentifier = do
    rest <- many (digit <|> letter)
    return $ [head] ++ rest
 
-parseString :: Parser MCLiteral
+parseString :: Parser Literal
 parseString = do
    char '"'
    x <- many $ escapedChars <|> many1 (noneOf ['"', '\\'])
    char '"'
    return $ String (concat x)
 
-parseInt :: Parser MCLiteral
+parseInt :: Parser Literal
 parseInt = do
    sign <- option '+' (char '-')
    digits <- many1 digit
@@ -27,17 +27,17 @@ parseInt = do
       '+' -> (Integer . read) digits
       '-' -> (Integer . (* (-1)) . read) digits
 
-parseBool :: Parser MCLiteral
+parseBool :: Parser Literal
 parseBool = do
    bool <- (string "True") <|> (string "False")
    return $ case bool of
       "True" -> Bool True
       "False" -> Bool False
 
-parseReferenceLiteral :: Parser Reference
-parseReferenceLiteral = do
-   val <- parseMCLiteral
-   return $ Literal val
+parseReferenceValue :: Parser Reference
+parseReferenceValue = do
+   val <- parseLiteral
+   return $ Value val
 
 parseReferenceIdentifier :: Parser Reference
 parseReferenceIdentifier = do
@@ -47,7 +47,7 @@ parseReferenceIdentifier = do
 parseReference :: Parser Reference
 parseReference = 
    try parseReferenceIdentifier
-   <|> parseReferenceLiteral
+   <|> parseReferenceValue
 
 listItemSep :: Parser ()
 listItemSep = do
@@ -55,7 +55,7 @@ listItemSep = do
    char ','
    spaces
 
-parseList :: Parser MCLiteral
+parseList :: Parser Literal
 parseList = do
    char '['
    spaces
@@ -75,15 +75,15 @@ escapedChars = do
       'r' -> "\r"
       't' -> "\t"
 
-parseMCLiteral :: Parser MCLiteral
-parseMCLiteral =
+parseLiteral :: Parser Literal
+parseLiteral =
    try parseString
    <|> try parseInt
    <|> try parseBool
    <|> try parseList
 
-parseVarDeclaration :: Parser Component
-parseVarDeclaration = do 
+parseDeclaration :: Parser Component
+parseDeclaration = do 
    string "let "
    identifier <- parseIdentifier
    string " = "
@@ -98,7 +98,7 @@ parseComment = do
 
 parseComponent :: Parser Component
 parseComponent =
-   try parseVarDeclaration
+   try parseDeclaration
    <|> try parseComment
 
 programmParser :: Parser Programm

@@ -1,21 +1,20 @@
 module Parser.AST where
 
 data Reference =
-    Literal MCLiteral
+    Value Literal
   | Identifier String
   deriving (Show)
 
-data MCLiteral =
+data Literal =
     Float Double
   | Integer Integer
   | String String
   | Bool Bool
   | List [Reference]
-  | Tuple [MCLiteral]
   deriving (Show)
 
 data Component =
-    MCLiteral
+    Literal
   | VarDeclaration String Reference
   | FuncDeclaration String Component
   | Noop
