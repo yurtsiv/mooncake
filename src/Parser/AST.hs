@@ -11,12 +11,12 @@ data Literal =
   | String String
   | Bool Bool
   | List [Reference]
+  | Function [String] Programm
   deriving (Show)
 
 data Component =
-    Literal
-  | VarDeclaration String Reference
-  | FuncDeclaration String Component
+    Reference Reference
+  | Declaration String Reference
   | Noop
   deriving (Show)
 

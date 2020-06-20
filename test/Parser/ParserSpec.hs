@@ -33,6 +33,11 @@ let weirdMultiDimList = [
 
 # comment at the end of the file
 
+let function = (a, b) ->
+  let c = a
+  c
+
+let continue = 1
 |]
 
 invalidProgramms =
