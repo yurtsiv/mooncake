@@ -1,22 +1,27 @@
 module Parser.AST where
 
-data Reference =
-    Value Literal
-  | Identifier String
-  deriving (Show)
-
-data Literal =
+data Expression =
+  -- Literals
     Float Double
   | Integer Integer
   | String String
   | Bool Bool
-  | List [Reference]
+  | List [Expression]
   | Function [String] Programm
+
+  -- Reference to other expression
+  | Identifier String
+
+  -- Algebraic operations
+  | Add Expression Expression 
+  | Sub Expression Expression
+  | Div Expression Expression
+  | Mul Expression Expression
   deriving (Show)
 
 data Component =
-    Reference Reference
-  | Declaration String Reference
+    Expression Expression
+  | Declaration String Expression
   | Noop
   deriving (Show)
 
