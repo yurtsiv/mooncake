@@ -7,35 +7,19 @@ import Data.List
 
 import Parser.AST
 import Parser.Utils
+import Parser.Language
 
 parseProgramm = parse programmParser "MoonCake"
 
-reservedNames = ["let"]
-
-parseReservedNames :: Parser ()
-parseReservedNames = mapM_ string reservedNames
-
-parseIdentifier :: Parser String
-parseIdentifier = do
-   notFollowedBy parseReservedNames
-   head <- letter
-   rest <- many (digit <|> letter)
-   return $ [head] ++ rest
-
 parseString :: Parser Expression
 parseString = do
-   char '"'
-   x <- many $ escapedChars <|> many1 (noneOf ['"', '\\'])
-   char '"'
-   return $ String (concat x)
+   s <- stringLiteral
+   return $ String s
 
 parseInt :: Parser Expression
 parseInt = do
-   sign <- option '+' (char '-')
-   digits <- many1 digit
-   return $ case sign of
-      '+' -> (Integer . read) digits
-      '-' -> (Integer . (* (-1)) . read) digits
+   i <- integer
+   return $ Integer i
 
 parseBool :: Parser Expression
 parseBool = do
@@ -74,7 +58,7 @@ parseFunction :: Int -> Parser Expression
 parseFunction level = do
    char '('
    spaces
-   args <- parseIdentifier `sepEndBy` (try listItemSep)
+   args <- identifier `sepEndBy` (try listItemSep)
    spaces
    string ") ->"
    body <- parseCodeBlock (level + 1)
@@ -82,7 +66,7 @@ parseFunction level = do
 
 parseExprIdentifier :: Parser Expression
 parseExprIdentifier = do
-   id <- parseIdentifier
+   id <- identifier
    return $ Identifier id
 
 parseExpression :: Int -> Parser Expression
@@ -96,11 +80,11 @@ parseExpression level =
 
 parseDeclaration :: Int -> Parser Component
 parseDeclaration level = do 
-   string "let "
-   identifier <- parseIdentifier
-   string " = "
+   reserved "let"
+   id <- identifier
+   reservedOp "="
    expr <- parseExpression level
-   return $ Declaration identifier expr
+   return $ Declaration id expr
 
 parseComment :: Parser Component
 parseComment = do
