@@ -11,7 +11,18 @@ reservedNames =
   ]
 
 reservedOpNames =
-  [ "="
+  [ "+"
+  , "-"
+  , "*"
+  , "/"
+  , "%"
+
+  , "=="
+  , ">"
+  , ">="
+  , "<"
+  , "<="
+  , "!"
   ]
 
 moonCakeDef = emptyDef

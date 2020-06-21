@@ -3,6 +3,7 @@ module Parser.Parser where
 import Text.ParserCombinators.Parsec
 import Text.Parsec.Combinator
 import Text.Parsec.Char
+import Text.Parsec.Expr
 import Data.List
 
 import Parser.AST
@@ -24,11 +25,9 @@ parseInt = do
    return $ Integer i
 
 parseBool :: Parser Expression
-parseBool = do
-   bool <- (string "True") <|> (string "False")
-   return $ case bool of
-      "True" -> Bool True
-      "False" -> Bool False
+parseBool =
+       Bool True <$ reserved "True"
+   <|> Bool False <$ reserved "False"
 
 listItemSep :: Parser ()
 listItemSep = do
@@ -53,7 +52,7 @@ parseFunction = do
    whiteSpace
    char ')'
    hSpaces 
-   string "->"
+   reservedOp "->"
    body <- parseExpression
    return $ Function args body
 
@@ -82,9 +81,57 @@ parseBlock = do
    char '}'
    return $ Block exprs
 
+
+binaryOp name fun assoc = Infix (do{ reservedOp name; return fun }) assoc
+prefixOp name fun = Prefix (do{ reservedOp name; return fun })
+
+algOpsTable =
+   [ 
+     [ binaryOp "*" (Mul) AssocLeft
+     , binaryOp "/" (Div) AssocLeft
+     , binaryOp "%" (Modulo) AssocLeft
+     ]
+   , [ binaryOp "+" (Add) AssocLeft
+     , binaryOp "-" (Sub) AssocLeft
+     ]
+   ]
+
+algOpTerm :: Parser Expression
+algOpTerm =
+   parens parseAlgOperators
+   <|> parseIdentifier
+   <|> parseInt
+
+parseAlgOperators = buildExpressionParser algOpsTable algOpTerm
+
+logicalOpsTable =
+   [ 
+     [prefixOp "!" (Inverse)]
+   , [ binaryOp ">" (Gt) AssocLeft
+     , binaryOp ">=" (GtE) AssocLeft
+     , binaryOp "<" (Lt) AssocLeft
+     , binaryOp "<" (LtE) AssocLeft
+     ]
+   , [ binaryOp "==" (Eq) AssocLeft
+     ]
+   ]
+
+logicalOpTerm :: Parser Expression
+logicalOpTerm =
+   parens parseLogicalOperators
+   <|> parseIdentifier
+   <|> parseBool
+   <|> parseInt
+   <|> parseString
+   <|> parseList
+
+parseLogicalOperators = buildExpressionParser logicalOpsTable logicalOpTerm
+
 parseExpression :: Parser Expression
 parseExpression =
-   try parseBlock
+   try parseAlgOperators
+   <|> try parseLogicalOperators
+   <|> try parseBlock
    <|> try parseIdentifier
    <|> try parseString
    <|> try parseInt

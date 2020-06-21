@@ -6,7 +6,8 @@ import System.IO
 import Test.Hspec
 import Text.RawString.QQ
 
-validProgramm = [r|
+compoundValidProgramm = [r|
+
 let string1 = "hello"
 let str1ngTwo = "new string"
 let PositiveInt = 123
@@ -59,6 +60,14 @@ let justBlock = {
 }
 |]
 
+validProgramms =
+  [ compoundValidProgramm
+  , "let a = - 1"
+  , "let e = 1 + 2 * x"
+  , "let b = !(1 > a)"
+  , "let b = \"hello\" == 1"
+  ]
+
 invalidProgramms =
   [ "let"
   , "let val"
@@ -96,7 +105,7 @@ testCorrectProgramm programm =
 spec :: Spec
 spec = do
   describe "valid programm" $ do
-    testCorrectProgramm validProgramm
+    mapM_ testCorrectProgramm validProgramms
 
   describe "invalid progamms" $ do
     mapM_ testIncorrectProgramm invalidProgramms

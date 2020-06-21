@@ -9,7 +9,7 @@ data Expression =
   | List [Expression]
   | Function [String] Expression
 
-  -- Declaration
+  -- Variable declaration
   | Let String Expression
 
   -- Reference to other expression
@@ -20,5 +20,17 @@ data Expression =
   | Sub Expression Expression
   | Div Expression Expression
   | Mul Expression Expression
+  | Modulo Expression Expression
+
+  -- Comparison operations
+  | Inverse Expression
+  | Gt Expression Expression
+  | GtE Expression Expression
+  | Lt Expression Expression
+  | LtE Expression Expression
+  | Eq Expression Expression
+  | NotEq Expression Expression
+
+  -- A couple of expressions
   | Block [Expression]
   deriving (Show)
