@@ -1,5 +1,6 @@
 {-# LANGUAGE QuasiQuotes #-}
 module Parser.ParserSpec (spec) where
+
 import Data.Either
 import Parser.Parser
 import System.IO

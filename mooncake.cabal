@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e9684ff65172599ef718865e5ce16b4be979eed16518f8ea0aac4b50362c69c7
+-- hash: bbc7ba3eb6e4db1a7c94e26b575cbaa65019e07f8087135ce4283f1134f915a0
 
 name:           mooncake
 version:        0.1.0.0
@@ -26,6 +26,7 @@ source-repository head
 
 library
   exposed-modules:
+      Interpreter.Eval
       Parser.AST
       Parser.Language
       Parser.Parser
@@ -56,6 +57,7 @@ test-suite mooncake-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Interpreter.EvalSpec
       Parser.ParserSpec
       Paths_mooncake
   hs-source-dirs:

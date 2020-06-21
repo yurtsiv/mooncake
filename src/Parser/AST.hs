@@ -2,8 +2,7 @@ module Parser.AST where
 
 data Expression =
   -- Literals
-    Float Double
-  | Integer Integer
+    Integer Integer
   | String String
   | Bool Bool
   | List [Expression]
@@ -29,7 +28,6 @@ data Expression =
   | Lt Expression Expression
   | LtE Expression Expression
   | Eq Expression Expression
-  | NotEq Expression Expression
 
   -- A couple of expressions
   | Block [Expression]

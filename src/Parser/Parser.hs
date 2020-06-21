@@ -85,7 +85,7 @@ parseBlock = do
 binaryOp name fun assoc = Infix (do{ reservedOp name; return fun }) assoc
 prefixOp name fun = Prefix (do{ reservedOp name; return fun })
 
-algOpsTable =
+operatorsTable =
    [ 
      [ binaryOp "*" (Mul) AssocLeft
      , binaryOp "/" (Div) AssocLeft
@@ -94,43 +94,30 @@ algOpsTable =
    , [ binaryOp "+" (Add) AssocLeft
      , binaryOp "-" (Sub) AssocLeft
      ]
-   ]
-
-algOpTerm :: Parser Expression
-algOpTerm =
-   parens parseAlgOperators
-   <|> parseIdentifier
-   <|> parseInt
-
-parseAlgOperators = buildExpressionParser algOpsTable algOpTerm
-
-logicalOpsTable =
-   [ 
-     [prefixOp "!" (Inverse)]
+   , [prefixOp "!" (Inverse)]
    , [ binaryOp ">" (Gt) AssocLeft
      , binaryOp ">=" (GtE) AssocLeft
      , binaryOp "<" (Lt) AssocLeft
-     , binaryOp "<" (LtE) AssocLeft
+     , binaryOp "<=" (LtE) AssocLeft
      ]
    , [ binaryOp "==" (Eq) AssocLeft
      ]
    ]
 
-logicalOpTerm :: Parser Expression
-logicalOpTerm =
-   parens parseLogicalOperators
+operatorTerm :: Parser Expression
+operatorTerm =
+   parens parseOperators
    <|> parseIdentifier
    <|> parseBool
    <|> parseInt
    <|> parseString
    <|> parseList
 
-parseLogicalOperators = buildExpressionParser logicalOpsTable logicalOpTerm
+parseOperators = buildExpressionParser operatorsTable operatorTerm
 
 parseExpression :: Parser Expression
 parseExpression =
-   try parseAlgOperators
-   <|> try parseLogicalOperators
+   try parseOperators
    <|> try parseBlock
    <|> try parseIdentifier
    <|> try parseString
@@ -139,7 +126,6 @@ parseExpression =
    <|> try parseList
    <|> try parseFunction
    <|> try parseLet
-
 
 programmParser :: Parser Expression
 programmParser = do
