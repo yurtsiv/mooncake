@@ -7,7 +7,7 @@ data Expression =
   | String String
   | Bool Bool
   | List [Expression]
-  | Function [String] Programm
+  | Function [String] Expression
 
   -- Declaration
   | Let String Expression
@@ -20,6 +20,5 @@ data Expression =
   | Sub Expression Expression
   | Div Expression Expression
   | Mul Expression Expression
+  | Block [Expression]
   deriving (Show)
-
-type Programm = [Expression]

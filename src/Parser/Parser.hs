@@ -9,7 +9,7 @@ import Parser.AST
 import Parser.Utils
 import Parser.Language
 
-parseProgramm :: String -> Either ParseError Programm
+parseProgramm :: String -> Either ParseError Expression
 parseProgramm programm =
    parse programmParser "MoonCake" $ "{" ++ programm ++ "}"
 
@@ -54,11 +54,11 @@ parseFunction = do
    char ')'
    hSpaces 
    string "->"
-   body <- parseCodeBlock
+   body <- parseExpression
    return $ Function args body
 
-parseExprIdentifier :: Parser Expression
-parseExprIdentifier = do
+parseIdentifier :: Parser Expression
+parseIdentifier = do
    id <- identifier
    return $ Identifier id
 
@@ -70,30 +70,32 @@ parseLet = do
    expr <- parseExpression
    return $ Let id expr
 
+parseBlock :: Parser Expression
+parseBlock = do
+   whiteSpace
+   char '{'
+   exprs <- many $ do
+      whiteSpace
+      expr <- parseExpression
+      whiteSpace
+      return expr
+   char '}'
+   return $ Block exprs
+
 parseExpression :: Parser Expression
 parseExpression =
-   try parseString
+   try parseBlock
+   <|> try parseIdentifier
+   <|> try parseString
    <|> try parseInt
    <|> try parseBool
    <|> try parseList
    <|> try parseFunction
    <|> try parseLet
-   <|> try parseExprIdentifier
 
-parseCodeBlock :: Parser Programm
-parseCodeBlock = do
-   whiteSpace
-   char '{'
-   programm <- many $ do
-      whiteSpace
-      comp <- parseExpression
-      whiteSpace
-      return comp
-   char '}'
-   return programm
 
-programmParser :: Parser Programm
+programmParser :: Parser Expression
 programmParser = do
-   programm <- parseCodeBlock
+   programm <- parseExpression
    eof
    return programm

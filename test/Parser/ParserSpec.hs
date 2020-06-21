@@ -31,6 +31,11 @@ let weirdMultiDimList = [
   [4, 5, 6],
 ]
 
+let listOfBlocks = [
+  { let a = 1 a},
+  { let b = PositiveInt b }
+]
+
 # comment at the end of the file
 
 let function = (a, b) -> {
@@ -38,12 +43,20 @@ let function = (a, b) -> {
   c
 }
 
+let function = (a, b) -> {a}
+
 let function = (a, b) -> { # not tab sensitive
 let c = a
 c
 }
 
 let continue = 1
+
+let justBlock = {
+  let a = 1
+  let b = 2 
+  a
+}
 |]
 
 invalidProgramms =
