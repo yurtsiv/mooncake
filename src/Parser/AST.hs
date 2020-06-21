@@ -9,6 +9,9 @@ data Expression =
   | List [Expression]
   | Function [String] Programm
 
+  -- Declaration
+  | Let String Expression
+
   -- Reference to other expression
   | Identifier String
 
@@ -19,10 +22,4 @@ data Expression =
   | Mul Expression Expression
   deriving (Show)
 
-data Component =
-    Expression Expression
-  | Declaration String Expression
-  | Noop
-  deriving (Show)
-
-type Programm = [Component]
+type Programm = [Expression]

@@ -9,7 +9,9 @@ import Parser.AST
 import Parser.Utils
 import Parser.Language
 
-parseProgramm = parse programmParser "MoonCake"
+parseProgramm :: String -> Either ParseError Programm
+parseProgramm programm =
+   parse programmParser "MoonCake" $ "{" ++ programm ++ "}"
 
 parseString :: Parser Expression
 parseString = do
@@ -30,38 +32,29 @@ parseBool = do
 
 listItemSep :: Parser ()
 listItemSep = do
-   spaces
+   whiteSpace
    char ','
-   spaces
+   whiteSpace
 
-parseList :: Int -> Parser Expression
-parseList level = do
+parseList :: Parser Expression
+parseList = do
    char '['
-   spaces
-   items <- (parseExpression level) `sepEndBy` (try listItemSep)
-   spaces
+   whiteSpace
+   items <- parseExpression `sepEndBy` (try listItemSep)
+   whiteSpace
    char ']'
    return $ List items
 
-escapedChars :: Parser String
-escapedChars = do
-   char '\\'
-   c <- oneOf "'\\nrt"
-   return $ case c of
-      '\\' -> "\\"
-      '\'' -> "'"
-      'n' -> "\n"
-      'r' -> "\r"
-      't' -> "\t"
-
-parseFunction :: Int -> Parser Expression
-parseFunction level = do
+parseFunction :: Parser Expression
+parseFunction = do
    char '('
-   spaces
+   whiteSpace
    args <- identifier `sepEndBy` (try listItemSep)
-   spaces
-   string ") ->"
-   body <- parseCodeBlock (level + 1)
+   whiteSpace
+   char ')'
+   hSpaces 
+   string "->"
+   body <- parseCodeBlock
    return $ Function args body
 
 parseExprIdentifier :: Parser Expression
@@ -69,56 +62,38 @@ parseExprIdentifier = do
    id <- identifier
    return $ Identifier id
 
-parseExpression :: Int -> Parser Expression
-parseExpression level =
-   try parseString
-   <|> try parseInt
-   <|> try parseBool
-   <|> (try $ parseList level)
-   <|> (try $ parseFunction level)
-   <|> try parseExprIdentifier
-
-parseDeclaration :: Int -> Parser Component
-parseDeclaration level = do 
+parseLet :: Parser Expression
+parseLet = do 
    reserved "let"
    id <- identifier
    reservedOp "="
-   expr <- parseExpression level
-   return $ Declaration id expr
+   expr <- parseExpression
+   return $ Let id expr
 
-parseComment :: Parser Component
-parseComment = do
-   hSpaces
-   char '#'
-   comment <- manyTill anyChar (try (char '\n'))
-   return Noop
+parseExpression :: Parser Expression
+parseExpression =
+   try parseString
+   <|> try parseInt
+   <|> try parseBool
+   <|> try parseList
+   <|> try parseFunction
+   <|> try parseLet
+   <|> try parseExprIdentifier
 
-parseComponentExpression :: Int -> Parser Component
-parseComponentExpression level = do
-   expr <- parseExpression level
-   return $ Expression expr
-
-parseComponent :: Int -> Parser Component
-parseComponent level = do
-   (try $ parseDeclaration level)
-   <|> (try $ parseComponentExpression level)
-   <|> try parseComment
-
-parseIndentation :: Int -> Parser String
-parseIndentation level =
-   (try $ string $ replicate level '\t')
-   <|> (string $ replicate (level * 2) ' ')
-
-parseCodeBlock :: Int -> Parser Programm
-parseCodeBlock level = many $ do
-   newlines
-   parseIndentation level
-   comp <- parseComponent level
-   newlines
-   return comp
+parseCodeBlock :: Parser Programm
+parseCodeBlock = do
+   whiteSpace
+   char '{'
+   programm <- many $ do
+      whiteSpace
+      comp <- parseExpression
+      whiteSpace
+      return comp
+   char '}'
+   return programm
 
 programmParser :: Parser Programm
 programmParser = do
-   programm <- parseCodeBlock 0
+   programm <- parseCodeBlock
    eof
    return programm

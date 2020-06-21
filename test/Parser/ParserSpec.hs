@@ -33,9 +33,10 @@ let weirdMultiDimList = [
 
 # comment at the end of the file
 
-let function = (a, b) ->
+let function = (a, b) -> {
   let c = a
   c
+}
 
 let continue = 1
 |]
@@ -49,9 +50,6 @@ invalidProgramms =
 
   -- Missing comma
   , "let arr = [1 2]"
-
-  -- Incorrect indentation
-  , " let something = 1"
   ]
 
 
