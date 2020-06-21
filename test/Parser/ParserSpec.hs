@@ -8,8 +8,8 @@ import Text.RawString.QQ
 
 validProgramm = [r|
 let string1 = "hello"
-let stringTwo = "new string"
-let positiveInt = 123
+let str1ngTwo = "new string"
+let PositiveInt = 123
 let intCopy = positiveInt # comment here no problems
 
 # multiline 
@@ -38,6 +38,11 @@ let function = (a, b) -> {
   c
 }
 
+let function = (a, b) -> { # not tab sensitive
+let c = a
+c
+}
+
 let continue = 1
 |]
 
@@ -50,6 +55,14 @@ invalidProgramms =
 
   -- Missing comma
   , "let arr = [1 2]"
+
+  -- Not allowed identifiers
+  , "let _noSpecSymbolsAtStart = 1"
+  , "let 1noNumsAtStart = 1"
+  , "let no_snake_case = 1"
+  , "let let = 1"
+  , "let True = False"
+  , "let False = True"
   ]
 
 

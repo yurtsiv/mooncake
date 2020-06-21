@@ -8,6 +8,3 @@ hSpace = oneOf [' ', '\t']
 
 hSpaces :: Parser ()
 hSpaces = skipMany hSpace
-
-newlines :: Parser ()
-newlines = skipMany newline
