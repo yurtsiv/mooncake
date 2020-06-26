@@ -15,9 +15,12 @@ testProgramm programm expected =
       Left err -> expectationFailure $ show err
       Right expr -> 
         let e = evaluate expr in
-        case (e == expected) of
-          True -> putStrLn "Success"
-          False -> expectationFailure "Fail"
+        case e of
+          Right res ->
+            case (res == expected) of
+              True -> putStrLn "Success"
+              False -> expectationFailure "Fail"
+          Left _ -> expectationFailure "Fail"
 
 spec :: Spec
 spec = do
