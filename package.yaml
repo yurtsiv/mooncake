@@ -22,6 +22,7 @@ description:         Please see the README on GitHub at https://github.com/yurts
 dependencies:
 - base >= 4.7 && < 5
 - parsec
+- containers
 
 library:
   source-dirs: src

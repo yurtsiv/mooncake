@@ -14,7 +14,7 @@ testProgramm programm expected =
     case parseProgramm programm of
       Left err -> expectationFailure $ show err
       Right expr -> 
-        let e = evaluate expr in
+        let e = startEvaluation expr in
         case e of
           Right res ->
             case (res == expected) of
@@ -41,11 +41,11 @@ spec = do
     testProgramm "3 <= 3" (Bool True)
     testProgramm "3 == 2" (Bool False)
 
-  -- describe "more complex cases" $ do
-  --   let p1 = [r|
-  --     let x = 1 + 2
-  --     let y = x - 1
-  --     y
-  --   |]
+  describe "more complex cases" $ do
+    let p1 = [r|
+      let x = 1 + 2
+      let y = x - 1
+      y
+    |]
 
-    -- testProgramm p1 (Integer 2)
+    testProgramm p1 (Integer 2)
