@@ -19,8 +19,8 @@ testProgramm programm expected =
           Right res ->
             case (res == expected) of
               True -> putStrLn "Success"
-              False -> expectationFailure "Fail"
-          Left _ -> expectationFailure "Fail"
+              False -> expectationFailure $ "Fail! Expected " ++ (show expected) ++ " and got " ++ (show res)
+          Left err -> expectationFailure $ "Fail! " ++ (show err) ++ ". AST " ++ (show expr)
 
 spec :: Spec
 spec = do
@@ -42,6 +42,7 @@ spec = do
     testProgramm "3 == 2" (Bool False)
 
   describe "more complex cases" $ do
+    -- basic variable usage
     let p1 = [r|
       let x = 1 + 2
       let y = x - 1
@@ -49,3 +50,16 @@ spec = do
     |]
 
     testProgramm p1 (Integer 2)
+
+    -- makign variables negative and positive
+    let p2 = [r|
+      let a = 1 
+      let b = 3
+      let negativeA = -a
+
+      # without outer parens it doesn't parse correctly.
+      # Need to think if this is a problem or not
+      (+(negativeA - 3))
+    |]
+
+    testProgramm p2 (Integer 4)

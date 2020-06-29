@@ -21,6 +21,8 @@ let intCopy = positiveInt # comment here no problems
  # indentation
 
 let negativeInt = -123
+let negation = -positiveInt
+let positivationXD = +negation
 let booleanT = True
 let booleanF = False
 let emptyList = []

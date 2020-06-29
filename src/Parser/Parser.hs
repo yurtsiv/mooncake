@@ -86,8 +86,11 @@ binaryOp name fun assoc = Infix (do{ reservedOp name; return fun }) assoc
 prefixOp name fun = Prefix (do{ reservedOp name; return fun })
 
 operatorsTable =
-   [ 
-     [ binaryOp "*" (Mul) AssocLeft
+   [
+     [ prefixOp "-" (Negative),
+       prefixOp "+" (Positive)
+     ]
+   , [ binaryOp "*" (Mul) AssocLeft
      , binaryOp "/" (Div) AssocLeft
      , binaryOp "%" (Modulo) AssocLeft
      ]

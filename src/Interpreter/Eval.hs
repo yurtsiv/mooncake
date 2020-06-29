@@ -38,6 +38,9 @@ evaluate (P.Identifier name) scope =
     Just val -> Right (val, scope)
     Nothing -> Left $ "No variable named " ++ name
 
+evaluate (P.Negative expr) scope = flipNumber expr scope "Infix '-' can be applied only to integers"
+evaluate (P.Positive expr) scope = flipNumber expr scope "Infix '+' can be applied only to integers"
+
 evaluate (P.Add expr1 expr2) scope = do
   (val1, _) <- evaluate expr1 scope
   (val2, _) <- evaluate expr2 scope
@@ -100,3 +103,9 @@ evalCompOp op expr1 expr2 scope = do
 
 evalCodeBlockItem (Right (_, scope)) expr = evaluate expr scope
 evalCodeBlockItem (Left a) _ = Left a
+
+flipNumber expr scope errMsg = do
+  (val, _) <- evaluate expr scope
+  case val of
+    Integer i -> Right $ (Integer $ negate i, scope)
+    _ -> Left $ errMsg

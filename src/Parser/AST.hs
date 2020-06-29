@@ -15,6 +15,8 @@ data Expression =
   | Identifier String
 
   -- Algebraic operations
+  | Negative Expression
+  | Positive Expression
   | Add Expression Expression 
   | Sub Expression Expression
   | Div Expression Expression
