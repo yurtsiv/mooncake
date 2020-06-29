@@ -3,11 +3,11 @@ module Main where
 import Parser.Parser
 import System.Environment
 
+import Cmd.Cmd
+
 main :: IO ()
 main = do
   args <- getArgs
-  let text = args !! 0
-  putStrLn $
-    case parseProgramm text of
-      Left err -> "Error: " ++ show err
-      Right val -> show val
+  let filePath = args !! 0
+  res <- evalFile filePath
+  putStrLn res
