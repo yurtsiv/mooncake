@@ -106,6 +106,17 @@ spec = do
       add(1, 2) + a
     |]
 
-
-
     testProgramm funcs (Integer 13)
+
+    let fib10 = [r|
+      let fib = (n) -> {
+        if n < 3:
+          1
+        else:
+          fib(n - 1) + fib(n - 2)
+      } 
+
+      fib(10)
+    |]
+
+    testProgramm fib10 (Integer 55)
