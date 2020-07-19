@@ -43,16 +43,16 @@ spec = do
 
   describe "more complex cases" $ do
     -- basic variable usage
-    let p1 = [r|
+    let vars = [r|
       let x = 1 + 2
       let y = x - 1
       y
     |]
 
-    testProgramm p1 (Integer 2)
+    testProgramm vars (Integer 2)
 
     -- makign variables negative and positive
-    let p2 = [r|
+    let prefixOps = [r|
       let a = 1 
       let b = 3
       # without outer parens it doesn't parse correctly.
@@ -60,10 +60,43 @@ spec = do
       (+(-a - 3))
     |]
 
-    testProgramm p2 (Integer 4)
+    testProgramm prefixOps (Integer 4)
+  
+    -- conditions
+    let cond1 = [r|
+      if True:
+        1
+    |]
+
+    testProgramm cond1 (Integer 1)
+
+    let cond2 = [r|
+      if False:
+        1
+    |]
+
+    testProgramm cond2 (Empty)
+
+    let cond3 = [r|
+      if 0 > 2:
+        1
+      else:
+        0
+    |]
+
+    testProgramm cond3 (Integer 0)
+
+    let cond4 = [r|
+      if 1 + 1 == 2:
+        1
+      else:
+        0
+    |]
+
+    testProgramm cond4 (Integer 1)
 
     -- functions
-    let p3 = [r|
+    let funcs = [r|
       let a = 10
       let add = (a, b) -> {
         let res = a + b
@@ -73,4 +106,6 @@ spec = do
       add(1, 2) + a
     |]
 
-    testProgramm p3 (Integer 13)
+
+
+    testProgramm funcs (Integer 13)

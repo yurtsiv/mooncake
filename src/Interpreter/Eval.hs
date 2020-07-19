@@ -51,6 +51,20 @@ evaluate (P.FunctionCall name callArgs) s =
     Right _ -> Left (name ++ " is not a function")
     Left err -> Left err
 
+evaluate (P.If condition body) s = do
+  (val, _) <- evaluate condition s
+  case val of
+    Bool True -> evaluate body s
+    Bool False -> Right $ (Empty, s)
+    _ -> Left "The condition is not a boolean"
+
+evaluate (P.IfElse condition ifBody elseBody) s = do
+  (val, _) <- evaluate condition s
+  case val of
+    Bool True -> evaluate ifBody s
+    Bool False -> evaluate elseBody s
+    _ -> Left "The condition is not a boolean"
+
 evaluate (P.Let name expr) scope = do
   (val, _) <- evaluate expr scope
   return (Empty, M.insert name val scope)
