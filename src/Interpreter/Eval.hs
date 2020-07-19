@@ -1,5 +1,6 @@
 module Interpreter.Eval where
 
+import Data.Map.Merge.Strict
 import qualified Data.Map.Strict as M
 import qualified Parser.AST as P
 
@@ -8,6 +9,7 @@ data Result =
   | String String
   | Bool Bool
   | List [Result]
+  | Function [String] P.Expression
   | Empty
   deriving (Eq, Ord, Show)
 
@@ -27,7 +29,27 @@ evaluate (P.List exprs) scope = do
   res <- sequence $ map (\e -> evaluate e scope) exprs
   return $ (List $ map fst res, scope)
 
-evaluate (P.Function args expr) s = Left "not implemented"
+evaluate (P.Function args expr) s =
+  Right $ (Function args expr, s)
+
+evaluate (P.FunctionCall name callArgs) s =
+  case evaluate (P.Identifier name) s of
+    Right (Function argNames body, s) ->
+      if (length callArgs) /= (length argNames) then
+        Left $ "Wrong number of arguments provided for " ++ name
+      else
+        let evalArgsRes = evaluate (P.List callArgs) s
+        in case evalArgsRes of
+          Right (List evalArgs, _) ->
+            let funcScope = merge preserveMissing
+                                  preserveMissing
+                                  (zipWithMatched (\_ -> \_ -> \x -> x))
+                                  s
+                                  (M.fromList $ (zip argNames evalArgs))
+            in evaluate body funcScope
+          Left err -> Left err
+    Right _ -> Left (name ++ " is not a function")
+    Left err -> Left err
 
 evaluate (P.Let name expr) scope = do
   (val, _) <- evaluate expr scope

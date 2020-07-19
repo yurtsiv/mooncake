@@ -36,4 +36,4 @@ data Expression =
 
   -- A couple of expressions
   | Block [Expression]
-  deriving (Show)
+  deriving (Eq, Ord, Show)

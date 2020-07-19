@@ -61,3 +61,16 @@ spec = do
     |]
 
     testProgramm p2 (Integer 4)
+
+    -- functions
+    let p3 = [r|
+      let a = 10
+      let add = (a, b) -> {
+        let res = a + b
+        res
+      }
+
+      add(1, 2) + a
+    |]
+
+    testProgramm p3 (Integer 13)
