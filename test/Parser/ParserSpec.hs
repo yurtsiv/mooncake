@@ -64,8 +64,8 @@ let justBlock = {
 |]
 
 validProgramms =
-  [ --compoundValidProgramm
-   "let a = - 1"
+  [ compoundValidProgramm
+  , "let a = - 1"
   , "let e = 1 + 2 * x"
   , "let b = !(1 > a)"
   , "let b = \"hello\" == 1"
@@ -73,6 +73,15 @@ validProgramms =
   , "\"1\" + \"2\""
   , "[1, 2] + [3, 4]"
   , "[(a) -> (a+1)] + [() -> {}]"
+  , "myFunc(a) + 2"
+  -- This parses as a function call to "a". Not sure it's desired
+  , [r|
+      let a = 1 
+      let b = 3
+      let negativeA = -a
+
+      (+(negativeA - 3))
+    |]
   ]
 
 invalidProgramms =

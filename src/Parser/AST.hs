@@ -6,7 +6,10 @@ data Expression =
   | String String
   | Bool Bool
   | List [Expression]
+
+  -- Functions
   | Function [String] Expression
+  | FunctionCall String [Expression]
 
   -- Variable declaration
   | Let String Expression

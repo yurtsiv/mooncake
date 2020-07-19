@@ -56,6 +56,16 @@ parseFunction = do
    body <- parseExpression
    return $ Function args body
 
+parseFunctionCall :: Parser Expression
+parseFunctionCall = do
+   id <- identifier
+   char '('
+   whiteSpace
+   args <- parseExpression `sepEndBy` (try listItemSep)
+   whiteSpace
+   char ')'
+   return $ FunctionCall id args
+
 parseIdentifier :: Parser Expression
 parseIdentifier = do
    id <- identifier
@@ -111,11 +121,12 @@ operatorTerm :: Parser Expression
 operatorTerm = do
    whiteSpace
    term <- parens parseOperators
-         <|> parseIdentifier
-         <|> parseBool
-         <|> parseInt
-         <|> parseString
-         <|> parseList
+         <|> try parseFunctionCall
+         <|> try parseIdentifier
+         <|> try parseBool
+         <|> try parseInt
+         <|> try parseString
+         <|> try parseList
    whiteSpace
    return term
 
@@ -125,6 +136,7 @@ parseExpression :: Parser Expression
 parseExpression =
    try parseFunction
    <|> try parseOperators
+   <|> try parseFunctionCall
    <|> try parseBlock
    <|> try parseIdentifier
    <|> try parseString

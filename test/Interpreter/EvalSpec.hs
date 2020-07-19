@@ -55,11 +55,9 @@ spec = do
     let p2 = [r|
       let a = 1 
       let b = 3
-      let negativeA = -a
-
       # without outer parens it doesn't parse correctly.
       # Need to think if this is a problem or not
-      (+(negativeA - 3))
+      (+(-a - 3))
     |]
 
     testProgramm p2 (Integer 4)
