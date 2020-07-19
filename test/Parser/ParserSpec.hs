@@ -64,11 +64,14 @@ let justBlock = {
 |]
 
 validProgramms =
-  [ compoundValidProgramm
-  , "let a = - 1"
+  [ --compoundValidProgramm
+   "let a = - 1"
   , "let e = 1 + 2 * x"
   , "let b = !(1 > a)"
   , "let b = \"hello\" == 1"
+  , "+ 1"
+  , "\"1\" + \"2\""
+  , "[1, 2] + [3, 4]"
   ]
 
 invalidProgramms =

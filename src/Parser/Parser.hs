@@ -87,8 +87,8 @@ prefixOp name fun = Prefix (do{ reservedOp name; return fun })
 
 operatorsTable =
    [
-     [ prefixOp "-" (Negative),
-       prefixOp "+" (Positive)
+     [ prefixOp "-" (Negative)
+     , prefixOp "+" (Positive)
      ]
    , [ binaryOp "*" (Mul) AssocLeft
      , binaryOp "/" (Div) AssocLeft
@@ -108,13 +108,16 @@ operatorsTable =
    ]
 
 operatorTerm :: Parser Expression
-operatorTerm =
-   parens parseOperators
-   <|> parseIdentifier
-   <|> parseBool
-   <|> parseInt
-   <|> parseString
-   <|> parseList
+operatorTerm = do
+   whiteSpace
+   term <- parens parseOperators
+         <|> parseIdentifier
+         <|> parseBool
+         <|> parseInt
+         <|> parseString
+         <|> parseList
+   whiteSpace
+   return term
 
 parseOperators = buildExpressionParser operatorsTable operatorTerm
 
