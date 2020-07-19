@@ -123,14 +123,14 @@ parseOperators = buildExpressionParser operatorsTable operatorTerm
 
 parseExpression :: Parser Expression
 parseExpression =
-   try parseOperators
+   try parseFunction
+   <|> try parseOperators
    <|> try parseBlock
    <|> try parseIdentifier
    <|> try parseString
    <|> try parseInt
    <|> try parseBool
    <|> try parseList
-   <|> try parseFunction
    <|> try parseLet
 
 programmParser :: Parser Expression
