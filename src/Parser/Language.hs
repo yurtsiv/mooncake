@@ -8,6 +8,8 @@ reservedNames =
   [ "let"
   , "True"
   , "False"
+  , "if"
+  , "else"
   ]
 
 reservedOpNames =

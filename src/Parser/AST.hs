@@ -10,6 +10,10 @@ data Expression =
   -- Functions
   | Function [String] Expression
   | FunctionCall String [Expression]
+  
+  -- Conditionals
+  | If Expression Expression
+  | IfElse Expression Expression Expression
 
   -- Variable declaration
   | Let String Expression

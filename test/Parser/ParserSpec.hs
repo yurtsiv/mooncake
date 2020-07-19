@@ -82,6 +82,17 @@ validProgramms =
 
       (+(negativeA - 3))
     |]
+  , [r|
+      if True:
+        False
+
+      if (1 + 2) == 3:
+        "yay, correct"
+      else: {
+        if 3 + 5 == 8:
+          "Horray"
+      }
+    |]
   ]
 
 invalidProgramms =
@@ -101,6 +112,7 @@ invalidProgramms =
   , "let let = 1"
   , "let True = False"
   , "let False = True"
+  , "let if = False"
   ]
 
 

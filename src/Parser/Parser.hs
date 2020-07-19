@@ -91,6 +91,21 @@ parseBlock = do
    char '}'
    return $ Block exprs
 
+parseIf :: Parser Expression
+parseIf = do
+   reserved "if"
+   condition <- parseExpression 
+   char ':'
+   body <- parseExpression
+   return $ If condition body
+
+parseIfElse :: Parser Expression
+parseIfElse = do
+   If ifCond ifBody <- parseIf
+   whiteSpace
+   reserved "else:"
+   elseBody <- parseExpression
+   return $ IfElse ifCond ifBody elseBody
 
 binaryOp name fun assoc = Infix (do{ reservedOp name; return fun }) assoc
 prefixOp name fun = Prefix (do{ reservedOp name; return fun })
@@ -136,6 +151,8 @@ parseExpression :: Parser Expression
 parseExpression =
    try parseFunction
    <|> try parseOperators
+   <|> try parseIfElse
+   <|> try parseIf
    <|> try parseFunctionCall
    <|> try parseBlock
    <|> try parseIdentifier
