@@ -51,7 +51,7 @@ parseFunction = do
    args <- identifier `sepEndBy` (try listItemSep)
    whiteSpace
    char ')'
-   hSpaces 
+   hWhiteSpace 
    reservedOp "->"
    body <- parseExpression
    return $ Function args body
