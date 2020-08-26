@@ -88,6 +88,19 @@ evaluate (AST.Lt expr1 expr2) scope = evalCompOp (<) expr1 expr2 scope
 evaluate (AST.LtE expr1 expr2) scope = evalCompOp (<=) expr1 expr2 scope
 evaluate (AST.Eq expr1 expr2) scope = evalCompOp (==) expr1 expr2 scope
 evaluate (AST.Block exprs) scope = foldl evalCodeBlockItem (Right (Empty, scope)) exprs
+evaluate (AST.Concat expr1 expr2) scope = do
+  (val1, _) <- evaluate expr1 scope
+  (val2, _) <- evaluate expr2 scope
+  case (val1, val2) of
+    (List elems1, List elems2) ->
+      Right ((List $ elems1 ++ elems2), scope)
+    (String str1, String str2) ->
+      Right ((String $ str1 ++ str2), scope)
+    (String str, List elems) ->
+      Right ((List $ (hsStringToMCList str) ++ elems), scope)
+    (List elems, String str) ->
+      Right ((List $ elems ++ (hsStringToMCList str)), scope)
+    _ -> Left "Can't concatenate"
 
 evalCodeBlockItem (Right (_, scope)) expr = evaluate expr scope
 evalCodeBlockItem (Left a) _ = Left a
@@ -112,3 +125,5 @@ flipNumber expr scope errMsg = do
   case val of
     Integer i -> Right $ (Integer $ negate i, scope)
     _ -> Left $ errMsg
+
+hsStringToMCList str = map (\c -> String [c]) str

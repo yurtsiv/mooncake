@@ -120,3 +120,40 @@ spec = do
     |]
 
     testProgramm fib10 (Integer 55)
+
+    -- concatenation
+    let concat1 = [r|
+      [] ++ [] 
+    |]
+
+    testProgramm concat1 (List [])
+
+    let concat2 = [r|
+      [1] ++ [2] 
+    |]
+
+    testProgramm concat2 (List [Integer 1, Integer 2])
+
+    let concat3 = [r|
+      [1] ++ ["hello"] 
+    |]
+
+    testProgramm concat3 (List [Integer 1, String "hello"])
+
+    let concat4 = [r|
+      "hello" ++ " concatenation"
+    |]
+
+    testProgramm concat4 (String "hello concatenation")
+
+    let concat5 = [r|
+      "hello" ++ [1]
+    |]
+
+    testProgramm concat5 (List [String "h", String "e", String "l", String "l", String "o", Integer 1])
+
+    let concat6 = [r|
+      [1] ++ "hello"
+    |]
+
+    testProgramm concat6 (List [Integer 1, String "h", String "e", String "l", String "l", String "o"])
