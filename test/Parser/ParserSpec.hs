@@ -74,7 +74,7 @@ validProgramms =
   , "[1, 2] + [3, 4]"
   , "[(a) -> (a+1)] + [() -> {}]"
   , "myFunc(a) + 2"
-  -- This parses as a function call to "a". Not sure it's desired
+  -- This parses as a function call to "a". Not sure it's desired behavior
   , [r|
       let a = 1 
       let b = 3
@@ -93,7 +93,11 @@ validProgramms =
           "Horray"
       }
     |]
+  , "[] ++ []"
+  , "\"string1\" ++ []"
+  , "func(a) ++ func(b)"
   ]
+  
 
 invalidProgramms =
   [ "let"

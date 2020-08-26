@@ -38,6 +38,9 @@ data Expression =
   | LtE Expression Expression
   | Eq Expression Expression
 
-  -- A couple of expressions
+  -- List/string operations
+  | Concat Expression Expression
+
+  -- A group of expressions
   | Block [Expression]
   deriving (Eq, Ord, Show)
