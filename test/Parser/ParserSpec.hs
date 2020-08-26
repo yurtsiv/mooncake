@@ -96,9 +96,9 @@ validProgramms =
   , "[] ++ []"
   , "\"string1\" ++ []"
   , "func(a) ++ func(b)"
+  , "len([])"
   ]
   
-
 invalidProgramms =
   [ "let"
   , "let val"
@@ -117,6 +117,7 @@ invalidProgramms =
   , "let True = False"
   , "let False = True"
   , "let if = False"
+  , "let len = 2"
   ]
 
 

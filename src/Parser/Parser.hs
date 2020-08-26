@@ -56,9 +56,12 @@ parseFunction = do
    body <- parseExpression
    return $ Function args body
 
+parseBuiltInFunctionName :: Parser String
+parseBuiltInFunctionName = (choice $ map string builtInFunctions)
+
 parseFunctionCall :: Parser Expression
 parseFunctionCall = do
-   id <- identifier
+   id <- (identifier <|> parseBuiltInFunctionName)
    char '('
    whiteSpace
    args <- parseExpression `sepEndBy` (try listItemSep)

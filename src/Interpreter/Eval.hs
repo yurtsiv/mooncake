@@ -29,20 +29,23 @@ evaluate (AST.List exprs) scope = do
   return $ (List $ map fst res, scope)
 evaluate (AST.Function args expr) scope =
   Right $ (Function args expr, scope)
-evaluate (AST.FunctionCall name callArgs) scope = do
-  (res, scope) <- evaluate (AST.Identifier name) scope
-  case res of
-    Function argNames body ->
-      if (length callArgs) /= (length argNames)
-        then Left $ "Wrong number of arguments provided for " ++ name
-        else
-          let evaluatedArgs = evaluate (AST.List callArgs) scope
-           in case evaluatedArgs of
-                Right (List evalArgs, _) ->
-                  let funcScope = mergeScopes scope (Map.fromList $ (zip argNames evalArgs))
-                   in evaluate body funcScope
-                Left err -> Left err
-    _ -> Left $ name ++ "is not a function"
+evaluate e@(AST.FunctionCall name callArgs) scope =
+  case Map.lookup name builtInFunctions of
+    Just func -> func e scope
+    _ -> do
+      (res, _) <- evaluate (AST.Identifier name) scope
+      case res of
+        Function argNames body ->
+          if (length callArgs) /= (length argNames)
+            then Left $ "Wrong number of arguments provided for " ++ name
+            else
+              let evaluatedArgs = evaluate (AST.List callArgs) scope
+              in case evaluatedArgs of
+                    Right (List evalArgs, _) ->
+                      let funcScope = mergeScopes scope (Map.fromList $ (zip argNames evalArgs))
+                      in evaluate body funcScope
+                    Left err -> Left err
+        _ -> Left $ name ++ "is not a function"
 evaluate (AST.If condition body) scope = do
   (val, _) <- evaluate condition scope
   case val of
@@ -127,3 +130,16 @@ flipNumber expr scope errMsg = do
     _ -> Left $ errMsg
 
 hsStringToMCList str = map (\c -> String [c]) str
+
+evalLen (AST.FunctionCall _ callArgs) scope =
+  case callArgs of
+    [arg] -> do
+      (val, _) <- evaluate arg scope
+      case val of
+        List elems -> Right $ (Integer $ (toInteger . length) elems, scope)
+        String str -> Right $ (Integer $ (toInteger . length) str, scope)
+        _ -> Left "Can't get length"
+    _ ->
+      Left "Wrong number of arguments provided for function 'len'"
+
+builtInFunctions = Map.fromList [("len", evalLen)]

@@ -157,3 +157,29 @@ spec = do
     |]
 
     testProgramm concat6 (List [Integer 1, String "h", String "e", String "l", String "l", String "o"])
+
+
+    -- len function
+    let len1 = [r|
+      len([]) 
+    |]
+
+    testProgramm len1 (Integer 0)
+
+    let len2 = [r|
+      len([1, 2, 3]) 
+    |]
+
+    testProgramm len2 (Integer 3)
+
+    let len3 = [r|
+      len("") 
+    |]
+
+    testProgramm len3 (Integer 0)
+ 
+    let len4 = [r|
+      len("hello") 
+    |]
+
+    testProgramm len4 (Integer 5)

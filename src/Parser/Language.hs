@@ -4,13 +4,15 @@ import Text.Parsec.Char
 import Text.Parsec.Language
 import qualified Text.Parsec.Token as T
 
+builtInFunctions = ["len"]
+
 reservedNames =
   [ "let",
     "True",
     "False",
     "if",
     "else"
-  ]
+  ] ++ builtInFunctions
 
 reservedOpNames =
   [ "+",
