@@ -20,7 +20,7 @@ let string = "Hello there!"
 
 let function = (a, b) -> a + b
 
-# lists are heterogenous i.e. can contain elements of different types. It's a comment btw
+# Lists are heterogenous i.e. can contain elements of different types. It's a comment btw
 let list = [number, boolean, string, function] 
 ```
 
@@ -65,7 +65,7 @@ let truth1 =
 
 # No elseif yet
 let truth2 =
-  if 2 != 2:
+  if !(2 == 2):
     "2 is not equal to 2"
   else: {
     if 3 == 2:
@@ -93,12 +93,6 @@ let fib = (n) -> {
   else:
     fib(n - 1) + fib(n - 2)
 }
-
-# Higher order functions
-let mul = (x) -> (y) -> x * y
-let apply = (f, val) -> f(val)
-
-let eight = apply(mul(4), 2)
 ```
 
 ## Installation
@@ -140,6 +134,8 @@ Short-term
 - [ ] Boolean `or` & `and`
 - [ ] List elements access (`list[0]`)
 - [ ] Built-in `print` function
+- [ ] `!=` operator
+- [ ] Higher order functions
 - [ ] Better error reporting
 - [ ] Automatic function currying
 - [ ] Documentation
@@ -148,7 +144,7 @@ Long-term
 - [ ] CLI
 - [ ] Module system
 - [ ] Virtual machine
-- [ ] Type system (?)
+- [ ] Static type system (?)
 
 ## Contributing
 

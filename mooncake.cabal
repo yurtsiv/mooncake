@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 3454128306a01433206632a42fe7d55efb2324d72f743bda729c9ca2bc703714
+-- hash: f001b0c5b64d28d2e1e584d8be59cf70d9f2bf2a01e8b7c9948ee3a8429f64fc
 
 name:           mooncake
 version:        0.1.0.0
@@ -15,6 +15,7 @@ author:         Stepan Yurtsiv
 maintainer:     stepan.yurtsiv@gmail.com
 copyright:      2020 Stepan Yurtsiv
 license:        BSD3
+license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md

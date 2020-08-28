@@ -63,8 +63,87 @@ let justBlock = {
 }
 |]
 
+readmeExamples = [r|
+let number = 1
+
+let boolean = True
+
+let string = "Hello there!"
+
+let function = (a, b) -> a + b
+
+# lists are heterogenous i.e. can contain elements of different types. It's a comment btw
+let list = [number, boolean, string, function] 
+
+# Algebra
+let sum = 4 + 2
+let sub = 4 - 2
+let div = 4 / 2
+let mul = 4 * 2
+let mod = 4 % 2
+
+# Comparison
+let eq = 2 == 2
+let gt = 4 > 2
+let gte = 4 >= 2
+let lt = 2 < 4
+let lte = 2 <= 4
+
+# Boolean logic (not fully implemented yet)
+let false = !True
+
+# Lists/strings
+let listLen = len([1, 2, 3])
+let strLen = len("Mooncake")
+let listConcat = [1, 2, 3] ++ ["Ready", "or", "not", "here", "I", "come"]
+let strConcat = "Hello" ++ " there"
+let strListConcat = "Hi" ++ [1, 2, 3] # will result in ["H", "i", 1, 2, 3]
+let listStrConcat = [1, 2, 3] ++ "Hi" # will result in [1, 2, 3, "H", "i"]
+
+# Conditional expressions are expressions, not statements i.e. they return something
+let truth1 =
+  if 4 >= 2:
+    "4 is greater or equal than 2"
+  else:
+    "4 is smaller than 2"
+
+# No elseif yet
+let truth2 =
+  if !(2 == 2):
+    "2 is not equal to 2"
+  else: {
+    if 3 == 2:
+      "3 is equal to 2"
+    else:
+      "3 is no equal to 2"
+  }
+
+# The last statement of a function body is what this function will return
+let add = (x, y) -> {
+  let sum = x + y
+  sum
+}
+
+let three = add(1, 2)
+
+# Recursion
+let fib = (n) -> {
+  if n < 3:
+    1
+  else:
+    fib(n - 1) + fib(n - 2)
+}
+
+# Higher order functions
+let mul = (x) -> (y) -> x * y
+let apply = (f, val) -> f(val)
+
+let eight = apply(mul(4), 2)
+|]
+
 validProgramms =
   [ compoundValidProgramm
+  , readmeExamples
   , "let a = - 1"
   , "let e = 1 + 2 * x"
   , "let b = !(1 > a)"
