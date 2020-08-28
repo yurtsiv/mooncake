@@ -28,7 +28,7 @@ library:
   source-dirs: src
 
 executables:
-  mooncake-exe:
+  mooncake:
     main:                Main.hs
     source-dirs:         app
     ghc-options:

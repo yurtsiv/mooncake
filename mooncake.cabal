@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 9006c5baa36fd6c8a80196fea7deff0fc9b255d0d5ffcf3ce48fff42b7c4e885
+-- hash: 3454128306a01433206632a42fe7d55efb2324d72f743bda729c9ca2bc703714
 
 name:           mooncake
 version:        0.1.0.0
@@ -43,7 +43,7 @@ library
     , parsec
   default-language: Haskell2010
 
-executable mooncake-exe
+executable mooncake
   main-is: Main.hs
   other-modules:
       Paths_mooncake
