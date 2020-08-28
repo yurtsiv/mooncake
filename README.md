@@ -6,7 +6,7 @@
 
 Mooncake is a functional, dynamic programming language.
 
-### ❗ No first release yet. Any kind of proposals are welcome since there's nothing to break :)
+### ❗ In early development. Any kind of proposals are welcome since there's nothing to break :)
 
 ## Tutorial
 
@@ -142,6 +142,7 @@ Short-term
 
 Long-term
 - [ ] CLI
+- [ ] REPL
 - [ ] Module system
 - [ ] Virtual machine
 - [ ] Static type system (?)
