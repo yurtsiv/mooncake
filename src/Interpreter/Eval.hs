@@ -84,12 +84,15 @@ evaluate (AST.Inverse expr) scope = do
   (val, _) <- evaluate expr scope
   case val of
     Bool b -> Right $ (Bool (not b), scope)
-    _ -> Left "Trying to invert non boolean"
-evaluate (AST.Gt expr1 expr2) scope = evalCompOp (>) expr1 expr2 scope
-evaluate (AST.GtE expr1 expr2) scope = evalCompOp (>=) expr1 expr2 scope
-evaluate (AST.Lt expr1 expr2) scope = evalCompOp (<) expr1 expr2 scope
-evaluate (AST.LtE expr1 expr2) scope = evalCompOp (<=) expr1 expr2 scope
-evaluate (AST.Eq expr1 expr2) scope = evalCompOp (==) expr1 expr2 scope
+    _ -> Left "Can invert only booleans"
+evaluate (AST.Or expr1 expr2) scope = evalBinBoolOp (||) expr1 expr2 scope
+evaluate (AST.And expr1 expr2) scope = evalBinBoolOp (&&) expr1 expr2 scope
+evaluate (AST.Gt expr1 expr2) scope = evalNumCompOp (>) expr1 expr2 scope
+evaluate (AST.GtE expr1 expr2) scope = evalNumCompOp (>=) expr1 expr2 scope
+evaluate (AST.Lt expr1 expr2) scope = evalNumCompOp (<) expr1 expr2 scope
+evaluate (AST.LtE expr1 expr2) scope = evalNumCompOp (<=) expr1 expr2 scope
+-- TODO: compare all primitive types
+evaluate (AST.Eq expr1 expr2) scope = evalNumCompOp (==) expr1 expr2 scope
 evaluate (AST.Block exprs) scope = foldl evalCodeBlockItem (Right (Empty, scope)) exprs
 evaluate (AST.Concat expr1 expr2) scope = do
   (val1, _) <- evaluate expr1 scope
@@ -114,14 +117,21 @@ evalAlgebraicOp op expr1 expr2 scope = do
   case (res1, res2) of
     (Integer val1, Integer val2) ->
       Right $ (Integer $ op val1 val2, scope)
-    _ -> Left "Can't perform algebraic operation on non-integers"
+    _ -> Left "Can perform algebraic operation only on numbers"
 
-evalCompOp op expr1 expr2 scope = do
+evalBinBoolOp op expr1 expr2 scope = do
+  (res1, _) <- evaluate expr1 scope
+  (res2, _) <- evaluate expr2 scope
+  case (res1, res2) of
+    (Bool b1, Bool b2) -> Right $ (Bool (op b1 b2), scope)
+    _ -> Left "Can perform operation only on booleans"
+
+evalNumCompOp op expr1 expr2 scope = do
   (res1, _) <- evaluate expr1 scope
   (res2, _) <- evaluate expr2 scope
   case (res1, res2) of
     (Integer val1, Integer val2) -> Right $ (Bool $ op val1 val2, scope)
-    _ -> Left "Can't compare non-integers"
+    _ -> Left "Can compare only numbers"
 
 flipNumber expr scope errMsg = do
   (val, _) <- evaluate expr scope

@@ -183,3 +183,10 @@ spec = do
     |]
 
     testProgramm len4 (Integer 5)
+
+    -- bool operations
+    let bool = [r|
+      !(True && False || True && True)
+    |]
+
+    testProgramm bool (Bool False)
