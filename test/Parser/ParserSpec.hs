@@ -176,6 +176,7 @@ validProgramms =
   , "\"string1\" ++ []"
   , "func(a) ++ func(b)"
   , "len([])"
+  , "let res = True && False || False && True"
   ]
   
 invalidProgramms =

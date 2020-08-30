@@ -118,21 +118,25 @@ operatorsTable =
      [ prefixOp "-" (Negative)
      , prefixOp "+" (Positive)
      ]
-   , [ binaryOp "*" (Mul) AssocLeft
-     , binaryOp "/" (Div) AssocLeft
-     , binaryOp "%" (Modulo) AssocLeft
+   , [ binaryOp "*" (Mul) AssocRight
+     , binaryOp "/" (Div) AssocRight
+     , binaryOp "%" (Modulo) AssocRight
      ]
-   , [ binaryOp "+" (Add) AssocLeft
-     , binaryOp "-" (Sub) AssocLeft
+   , [ binaryOp "+" (Add) AssocRight
+     , binaryOp "-" (Sub) AssocRight
      ]
-   , [prefixOp "!" (Inverse)]
-   , [ binaryOp ">" (Gt) AssocLeft
-     , binaryOp ">=" (GtE) AssocLeft
-     , binaryOp "<" (Lt) AssocLeft
-     , binaryOp "<=" (LtE) AssocLeft
+   , [ binaryOp "&&" (And) AssocRight
      ]
-   , [ binaryOp "==" (Eq) AssocLeft
-     , binaryOp "++" (Concat) AssocLeft
+   , [ prefixOp "!" (Inverse)
+     , binaryOp "||" (Or) AssocRight
+     ]
+   , [ binaryOp ">" (Gt) AssocRight
+     , binaryOp ">=" (GtE) AssocRight
+     , binaryOp "<" (Lt) AssocRight
+     , binaryOp "<=" (LtE) AssocRight
+     ]
+   , [ binaryOp "==" (Eq) AssocRight
+     , binaryOp "++" (Concat) AssocRight
      ]
    ]
 

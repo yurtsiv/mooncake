@@ -30,8 +30,12 @@ data Expression =
   | Mul Expression Expression
   | Modulo Expression Expression
 
-  -- Comparison operations
+  -- Boolean operators
   | Inverse Expression
+  | And Expression Expression
+  | Or Expression Expression
+
+  -- Comparison operations
   | Gt Expression Expression
   | GtE Expression Expression
   | Lt Expression Expression
