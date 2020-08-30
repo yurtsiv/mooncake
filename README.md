@@ -41,8 +41,10 @@ let gte = 4 >= 2
 let lt = 2 < 4
 let lte = 2 <= 4
 
-# Boolean logic (not fully implemented yet)
+# Boolean logic
 let false = !True
+let and = True && False
+let or = True || False
 
 # Lists/strings
 let listLen = len([1, 2, 3])
@@ -131,7 +133,7 @@ mooncake hello.mc
 Short-term
 - [ ] Floating point numbers
 - [ ] Character type
-- [ ] Boolean `or` & `and`
+- [x] Boolean `or` & `and`
 - [ ] List elements access (`list[0]`)
 - [ ] Built-in `print` function
 - [ ] `!=` operator
