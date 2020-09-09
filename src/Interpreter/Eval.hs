@@ -4,16 +4,17 @@ import qualified Data.Map.Strict as Map
 import Interpreter.Utils
 import qualified Parser.AST as AST
 
+type Scope = Map.Map String Result
+
 data Result
   = Integer Integer
   | String String
   | Bool Bool
   | List [Result]
-  | Function [String] AST.Expression
+  | Function Scope [String] AST.Expression
   | Empty
   deriving (Eq, Ord, Show)
 
-type Scope = Map.Map String Result
 
 startEvaluation :: AST.Expression -> Either String Result
 startEvaluation expr = do
@@ -28,23 +29,14 @@ evaluate (AST.List exprs) scope = do
   res <- sequence $ map (\e -> evaluate e scope) exprs
   return $ (List $ map fst res, scope)
 evaluate (AST.Function args expr) scope =
-  Right $ (Function args expr, scope)
+  Right $ (Function Map.empty args expr, scope)
 evaluate e@(AST.FunctionCall name callArgs) scope =
   case Map.lookup name builtInFunctions of
     Just func -> func e scope
     _ -> do
       (res, _) <- evaluate (AST.Identifier name) scope
       case res of
-        Function argNames body ->
-          if (length callArgs) /= (length argNames)
-            then Left $ "Wrong number of arguments provided for " ++ name
-            else
-              let evaluatedArgs = evaluate (AST.List callArgs) scope
-              in case evaluatedArgs of
-                    Right (List evalArgs, _) ->
-                      let funcScope = mergeScopes scope (Map.fromList $ (zip argNames evalArgs))
-                      in evaluate body funcScope
-                    Left err -> Left err
+        Function _ _ _ -> evalFuncCall name res callArgs scope
         _ -> Left $ name ++ "is not a function"
 evaluate (AST.If condition body) scope = do
   (val, _) <- evaluate condition scope
@@ -153,3 +145,17 @@ evalLen (AST.FunctionCall _ callArgs) scope =
       Left "Wrong number of arguments provided for function 'len'"
 
 builtInFunctions = Map.fromList [("len", evalLen)]
+
+evalFuncCall name (Function closure argNames body) callArgs scope
+  | (length callArgs) /= (length argNames) =
+      Left $ "Wrong number of arguments provided for " ++ name
+  | otherwise =
+      let evaluatedArgs = evaluate (AST.List callArgs) scope
+      in case evaluatedArgs of
+        Right (List evalArgs, _) ->
+          let funcScope = mergeScopes scope (Map.fromList $ (zip argNames evalArgs))
+              funcRes = evaluate body funcScope
+          in case funcRes of
+            Right (res, _) -> Right (res, scope)
+            _ -> funcRes
+        Left err -> Left err
