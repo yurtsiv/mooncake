@@ -11,6 +11,7 @@ Mooncake is a functional, dynamic programming language.
 ## Tutorial
 
 **Data types**
+
 ```
 let number = 1
 
@@ -21,7 +22,7 @@ let string = "Hello there!"
 let function = (a, b) -> a + b
 
 # Lists are heterogenous i.e. can contain elements of different types. It's a comment btw
-let list = [number, boolean, string, function] 
+let list = [number, boolean, string, function]
 ```
 
 **Operators**
@@ -73,14 +74,14 @@ let truth2 =
     if 3 == 2:
       "3 is equal to 2"
     else:
-      "3 is no equal to 2"
+      "3 is not equal to 2"
   }
 ```
 
 **Functions**
 
 ```
-# The last statement of a function body is what this function will return
+# The last statement of a function body is what the function returns
 let add = (x, y) -> {
   let sum = x + y
   sum
@@ -95,17 +96,26 @@ let fib = (n) -> {
   else:
     fib(n - 1) + fib(n - 2)
 }
+
+# Higher order functions
+bet mul = (x) -> (y) -> x * y
+let apply = (f, val) -> f(val)
+
+let eight = apply(mul(4), 2)
 ```
 
 ## Installation
 
-###  Build from source
+### Build from source
 
 **Install** [Stack](https://docs.haskellstack.org/en/stable/README/)
+
 ```
 curl -sSL https://get.haskellstack.org/ | sh
 ```
-or 
+
+or
+
 ```
 wget -qO- https://get.haskellstack.org/ | sh
 ```
@@ -123,26 +133,28 @@ stack install
 ```
 
 **Run a programm**
+
 ```
 mooncake hello.mc
 ```
 
-
 ## TODO
 
 Short-term
+
 - [ ] Floating point numbers
 - [ ] Character type
 - [x] Boolean `or` & `and`
 - [ ] List elements access (`list[0]`)
 - [ ] Built-in `print` function
 - [ ] `!=` operator
-- [ ] Higher order functions
+- [x] Higher order functions
 - [ ] Better error reporting
 - [ ] Automatic function currying
 - [ ] Documentation
 
 Long-term
+
 - [ ] CLI
 - [ ] REPL
 - [ ] Module system
@@ -154,11 +166,15 @@ Long-term
 Feel free to create an issue or submit a PR (check out the development guide below). You can get in touch with me via E-mail yurtsiv.stepan@gmail.com
 
 ## Development
+
 **Install** [Stack](https://docs.haskellstack.org/en/stable/README/)
+
 ```
 curl -sSL https://get.haskellstack.org/ | sh
 ```
-or 
+
+or
+
 ```
 wget -qO- https://get.haskellstack.org/ | sh
 ```
@@ -170,6 +186,7 @@ git clone git@github.com:yurtsiv/mooncake.git
 ```
 
 **Run tests**
+
 ```
 stack test
 ```

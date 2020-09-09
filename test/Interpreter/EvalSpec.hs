@@ -4,6 +4,7 @@ module Interpreter.EvalSpec (spec) where
 import Test.Hspec
 import Text.RawString.QQ
 
+import Interpreter.Types
 import Interpreter.Eval
 import qualified Parser.AST as P
 import Parser.Parser
@@ -190,3 +191,40 @@ spec = do
     |]
 
     testProgramm bool (Bool False)
+
+
+    -- closure & shadowing
+    let closure = [r|
+      let a = 1
+      let b = 2
+      let c = 3
+
+      let f1 = (a) -> {
+        let b = 4
+        let d = 5
+
+        let f2 = () -> {
+          # a = 6, b = 4, c = 3, d = 5
+          a + b + c + d
+        }
+
+        f2
+      }
+
+      let f2 = f1(6)
+
+      # a = 1, b = 2
+      f2() + a + b
+    |]
+
+    testProgramm closure (Integer 21)
+
+    -- higher order functions
+    let hof = [r|
+      let mul = (x) -> (y) -> x * y
+      let apply = (f, val) -> f(val)
+
+      apply(mul(4), 2)
+    |]
+
+    testProgramm hof (Integer 8)

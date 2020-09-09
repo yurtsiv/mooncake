@@ -2,18 +2,8 @@ module Interpreter.Eval where
 
 import qualified Data.Map.Strict as Map
 import Interpreter.Utils
+import Interpreter.Types
 import qualified Parser.AST as AST
-
-type Scope = Map.Map String Result
-
-data Result
-  = Integer Integer
-  | String String
-  | Bool Bool
-  | List [Result]
-  | Function Scope [String] AST.Expression
-  | Empty
-  deriving (Eq, Ord, Show)
 
 
 startEvaluation :: AST.Expression -> Either String Result
@@ -153,9 +143,10 @@ evalFuncCall name (Function closure argNames body) callArgs scope
       let evaluatedArgs = evaluate (AST.List callArgs) scope
       in case evaluatedArgs of
         Right (List evalArgs, _) ->
-          let funcScope = mergeScopes scope (Map.fromList $ (zip argNames evalArgs))
+          let funcScope = mergeScopes [scope, closure, (Map.fromList $ (zip argNames evalArgs))]
               funcRes = evaluate body funcScope
           in case funcRes of
+            Right (Function _ a b, s) -> Right (Function (mergeScopes [funcScope, s]) a b, scope)
             Right (res, _) -> Right (res, scope)
             _ -> funcRes
-        Left err -> Left err
+        err -> err

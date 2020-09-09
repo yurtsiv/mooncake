@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f001b0c5b64d28d2e1e584d8be59cf70d9f2bf2a01e8b7c9948ee3a8429f64fc
+-- hash: d324b4e29c0fca8df896940a2238458f8e23a24a571a6cf4fe04887a2940145e
 
 name:           mooncake
 version:        0.1.0.0
@@ -29,6 +29,7 @@ library
   exposed-modules:
       Cmd.Cmd
       Interpreter.Eval
+      Interpreter.Types
       Interpreter.Utils
       Parser.AST
       Parser.Language
