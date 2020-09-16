@@ -48,6 +48,8 @@ let and = True && False
 let or = True || False
 
 # Lists/strings
+let list = [1, 2, 3]
+let firstElem = list(0)
 let listLen = len([1, 2, 3])
 let strLen = len("Mooncake")
 let listConcat = [1, 2, 3] ++ ["Ready", "or", "not", "here", "I", "come"]
