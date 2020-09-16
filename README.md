@@ -145,7 +145,7 @@ Short-term
 - [ ] Floating point numbers
 - [ ] Character type
 - [x] Boolean `or` & `and`
-- [ ] List elements access (`list[0]`)
+- [x] List elements access (`list(0)`)
 - [ ] Built-in `print` function
 - [ ] `!=` operator
 - [x] Higher order functions

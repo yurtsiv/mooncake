@@ -228,3 +228,20 @@ spec = do
     |]
 
     testProgramm hof (Integer 8)
+
+    let map = [r|
+      let mapHelp = (list, func, index) -> {
+        if (index == len(list)):
+          []
+        else:
+          [func(list(index))] ++ mapHelp(list, func, index + 1)
+      }
+
+      let map = (list, func) -> mapHelp(list, func, 0)
+
+      let add1 = (x) -> x + 1
+
+      map([1,2,3], add1)
+    |]
+
+    testProgramm map (List [Integer 2, Integer 3, Integer 4])

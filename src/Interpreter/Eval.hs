@@ -27,7 +27,8 @@ evaluate e@(AST.FunctionCall name callArgs) scope =
       (res, _) <- evaluate (AST.Identifier name) scope
       case res of
         Function _ _ _ -> evalFuncCall name res callArgs scope
-        _ -> Left $ name ++ "is not a function"
+        List items -> evalListElemAccess name callArgs items scope
+        _ -> Left $ name ++ "is not a function or list"
 evaluate (AST.If condition body) scope = do
   (val, _) <- evaluate condition scope
   case val of
@@ -150,3 +151,17 @@ evalFuncCall name (Function closure argNames body) callArgs scope
             Right (res, _) -> Right (res, scope)
             _ -> funcRes
         err -> err
+
+evalListElemAccess name callArgs items scope
+  | (length callArgs) /= 1 =
+      Left $ "Wrong number of arguments provided for list element access"
+  | otherwise =
+    let evaluatedIndex = evaluate (callArgs !! 0) scope
+    in case evaluatedIndex of
+      Right (Integer index, _) ->
+        if (index >= toInteger (length items) || index < 0) then
+          Left $ "Index " ++ (show index) ++ " out of bound for " ++ name
+        else
+          Right $ (items !! fromInteger index, scope)
+
+  
