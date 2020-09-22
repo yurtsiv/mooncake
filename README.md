@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.ibb.co/QC9rs0Q/mooncake-font.png" height="500px"/>
+  <img src="https://i.ibb.co/QC9rs0Q/mooncake-font.png" height="300px"/>
 </p>
 
 # Mooncake
