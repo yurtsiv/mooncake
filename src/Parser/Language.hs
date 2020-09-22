@@ -11,7 +11,10 @@ reservedNames =
     "True",
     "False",
     "if",
-    "else"
+    "else",
+    "do",
+    "end",
+    "then"
   ] ++ builtInFunctions
 
 reservedOpNames =

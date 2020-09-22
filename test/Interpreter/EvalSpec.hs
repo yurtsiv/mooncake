@@ -65,33 +65,37 @@ spec = do
   
     -- conditions
     let cond1 = [r|
-      if True:
+      if True then
         1
+      end
     |]
 
     testProgramm cond1 (Integer 1)
 
     let cond2 = [r|
-      if False:
+      if False then
         1
+      end
     |]
 
     testProgramm cond2 (Empty)
 
     let cond3 = [r|
-      if 0 > 2:
+      if 0 > 2 then
         1
-      else:
+      else
         0
+      end
     |]
 
     testProgramm cond3 (Integer 0)
 
     let cond4 = [r|
-      if 1 + 1 == 2:
+      if 1 + 1 == 2 then
         1
-      else:
+      else
         0
+      end
     |]
 
     testProgramm cond4 (Integer 1)
@@ -99,10 +103,10 @@ spec = do
     -- functions
     let funcs = [r|
       let a = 10
-      let add = (a, b) -> {
+      let add = (a, b) do
         let res = a + b
         res
-      }
+      end
 
       add(1, 2) + a
     |]
@@ -110,12 +114,13 @@ spec = do
     testProgramm funcs (Integer 13)
 
     let fib10 = [r|
-      let fib = (n) -> {
-        if n < 3:
+      let fib = (n) do
+        if n < 3 then
           1
-        else:
+        else
           fib(n - 1) + fib(n - 2)
-      } 
+        end
+      end
 
       fib(10)
     |]
@@ -199,17 +204,17 @@ spec = do
       let b = 2
       let c = 3
 
-      let f1 = (a) -> {
+      let f1 = (a) do
         let b = 4
         let d = 5
 
-        let f2 = () -> {
+        let f2 = () do
           # a = 6, b = 4, c = 3, d = 5
           a + b + c + d
-        }
+        end
 
         f2
-      }
+      end
 
       let f2 = f1(6)
 
@@ -221,8 +226,12 @@ spec = do
 
     -- higher order functions
     let hof = [r|
-      let mul = (x) -> (y) -> x * y
-      let apply = (f, val) -> f(val)
+      let mul = (x) do
+        (y) do x * y end
+      end
+      let apply = (f, val) do
+        f(val)
+      end
 
       apply(mul(4), 2)
     |]
@@ -230,16 +239,17 @@ spec = do
     testProgramm hof (Integer 8)
 
     let map = [r|
-      let mapHelp = (list, func, index) -> {
-        if (index == len(list)):
+      let mapHelp = (list, func, index) do
+        if (index == len(list)) then
           []
-        else:
+        else
           [func(list(index))] ++ mapHelp(list, func, index + 1)
-      }
+        end
+      end
 
-      let map = (list, func) -> mapHelp(list, func, 0)
+      let map = (list, func) do mapHelp(list, func, 0) end
 
-      let add1 = (x) -> x + 1
+      let add1 = (x) do x + 1 end
 
       map([1,2,3], add1)
     |]

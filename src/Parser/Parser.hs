@@ -12,7 +12,7 @@ import Parser.Language
 
 parseProgramm :: String -> Either ParseError Expression
 parseProgramm programm =
-   parse programmParser "MoonCake" $ "{" ++ programm ++ "}"
+   parse programmParser "MoonCake" $ "do " ++ programm ++ " end"
 
 parseString :: Parser Expression
 parseString = do
@@ -51,9 +51,8 @@ parseFunction = do
    args <- identifier `sepEndBy` (try listItemSep)
    whiteSpace
    char ')'
-   hWhiteSpace 
-   reservedOp "->"
-   body <- parseExpression
+   whiteSpace 
+   body <- parseBlock
    return $ Function args body
 
 parseBuiltInFunctionName :: Parser String
@@ -85,29 +84,34 @@ parseLet = do
 parseBlock :: Parser Expression
 parseBlock = do
    whiteSpace
-   char '{'
+   reserved "do"
    exprs <- many $ do
       whiteSpace
       expr <- parseExpression
       whiteSpace
       return expr
-   char '}'
+   reserved "end"
    return $ Block exprs
 
 parseIf :: Parser Expression
 parseIf = do
    reserved "if"
    condition <- parseExpression 
-   char ':'
+   reserved "then"
    body <- parseExpression
+   reserved "end"
    return $ If condition body
 
 parseIfElse :: Parser Expression
 parseIfElse = do
-   If ifCond ifBody <- parseIf
+   reserved "if"
+   ifCond <- parseExpression 
+   reserved "then"
+   ifBody <- parseExpression
    whiteSpace
-   reserved "else:"
+   reserved "else"
    elseBody <- parseExpression
+   reserved "end"
    return $ IfElse ifCond ifBody elseBody
 
 binaryOp name fun assoc = Infix (do{ reservedOp name; return fun }) assoc

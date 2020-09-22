@@ -36,33 +36,34 @@ let weirdMultiDimList = [
 ]
 
 let listOfBlocks = [
-  { let a = 1 a},
-  { let b = PositiveInt b }
+  do let a = 1 a end,
+  do let b = PositiveInt b end
 ]
 
 # comment at the end of the file
 
-let function = (a, b) -> {
+let function = (a, b) do
   let c = a
   c
-}
+end
 
-let function = (a, b) -> {a}
+let function = (a, b) do a end
 
-let function = (a, b) -> { # not tab sensitive
+let function = (a, b) do # not tab sensitive
 let c = a
 c
-}
+end
 
 let continue = 1
 
-let justBlock = {
+let justBlock = do
   let a = 1
   let b = 2 
   a
-}
+end
 |]
 
+-- Examples from README
 readmeExamples = [r|
 let number = 1
 
@@ -70,7 +71,9 @@ let boolean = True
 
 let string = "Hello there!"
 
-let function = (a, b) -> a + b
+let function = (a, b) do
+  a + b
+end
 
 # lists are heterogenous i.e. can contain elements of different types. It's a comment btw
 let list = [number, boolean, string, function] 
@@ -102,41 +105,49 @@ let listStrConcat = [1, 2, 3] ++ "Hi" # will result in [1, 2, 3, "H", "i"]
 
 # Conditional expressions are expressions, not statements i.e. they return something
 let truth1 =
-  if 4 >= 2:
+  if 4 >= 2 then
     "4 is greater or equal than 2"
-  else:
+  else
     "4 is smaller than 2"
+  end
 
 # No elseif yet
 let truth2 =
-  if !(2 == 2):
+  if !(2 == 2) then
     "2 is not equal to 2"
-  else: {
-    if 3 == 2:
+  else
+    if 3 == 2 then
       "3 is equal to 2"
-    else:
-      "3 is no equal to 2"
-  }
+    else
+      "3 is not equal to 2"
+    end
+  end
 
-# The last statement of a function body is what this function will return
-let add = (x, y) -> {
+# The last statement of a function body is what the function returns
+let add = (x, y) do
   let sum = x + y
   sum
-}
+end
 
 let three = add(1, 2)
 
 # Recursion
-let fib = (n) -> {
-  if n < 3:
+let fib = (n) do
+  if n < 3 then
     1
-  else:
+  else
     fib(n - 1) + fib(n - 2)
-}
+  end
+end
 
 # Higher order functions
-let mul = (x) -> (y) -> x * y
-let apply = (f, val) -> f(val)
+let mul = (x) do
+  (y) do x * y end
+end
+
+let apply = (f, val) do
+  f(val)
+end
 
 let eight = apply(mul(4), 2)
 |]
@@ -151,7 +162,7 @@ validProgramms =
   , "+ 1"
   , "\"1\" + \"2\""
   , "[1, 2] + [3, 4]"
-  , "[(a) -> (a+1)] + [() -> {}]"
+  , "[(a) do (a+1) end] + [() do end]"
   , "myFunc(a) + 2"
   -- This parses as a function call to "a". Not sure it's desired behavior
   , [r|
@@ -162,15 +173,17 @@ validProgramms =
       (+(negativeA - 3))
     |]
   , [r|
-      if True:
+      if True then
         False
+      end
 
-      if (1 + 2) == 3:
+      if (1 + 2) == 3 then
         "yay, correct"
-      else: {
-        if 3 + 5 == 8:
+      else
+        if 3 + 5 == 8 then
           "Horray"
-      }
+        end
+      end
     |]
   , "[] ++ []"
   , "\"string1\" ++ []"
