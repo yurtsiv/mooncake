@@ -52,8 +52,8 @@ spec = do
 
     testProgramm vars (Integer 2)
 
-    -- makign variables negative and positive
-    let prefixOps = [r|
+    -- integers
+    let integers = [r|
       let a = 1 
       let b = 3
       # without outer parens it doesn't parse correctly.
@@ -61,8 +61,28 @@ spec = do
       (+(-a - 3))
     |]
 
-    testProgramm prefixOps (Integer 4)
-  
+    testProgramm integers (Integer 4)
+
+    -- floats
+    let floats = [r|
+      let a = -1.2 
+      let b = 1.2
+
+      (+(-b + a))
+    |]
+
+    testProgramm floats (Float 1.4)
+
+    -- floats and ints
+    let floats = [r|
+      let i = 2
+      let f = 2.1
+
+      i + f
+    |]
+
+    testProgramm floats (Float 4.1)
+
     -- conditions
     let cond1 = [r|
       if True then

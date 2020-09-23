@@ -20,9 +20,14 @@ parseString = do
    return $ String s
 
 parseInt :: Parser Expression
-parseInt = do
+parseInt =  do
    i <- integer
    return $ Integer i
+
+parseFloat :: Parser Expression
+parseFloat = do
+   f <- float
+   return $ Float f
 
 parseBool :: Parser Expression
 parseBool =
@@ -151,6 +156,7 @@ operatorTerm = do
          <|> try parseFunctionCall
          <|> try parseIdentifier
          <|> try parseBool
+         <|> try parseFloat
          <|> try parseInt
          <|> try parseString
          <|> try parseList
@@ -169,6 +175,7 @@ parseExpression =
    <|> try parseBlock
    <|> try parseIdentifier
    <|> try parseString
+   <|> try parseFloat
    <|> try parseInt
    <|> try parseBool
    <|> try parseList

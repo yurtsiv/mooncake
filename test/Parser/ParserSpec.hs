@@ -13,6 +13,7 @@ let string1 = "hello"
 let str1ngTwo = "new string"
 let PositiveInt = 123
 let intCopy = positiveInt # comment here no problems
+let float = 1.2
 
 # multiline 
 # comment
@@ -28,6 +29,10 @@ let booleanF = False
 let emptyList = []
 let oneItemList = [ 1 ]
 let multipleItemsList = [1, 2, 3]
+
+# weird names
+let let1 = 123
+let then1 = 123
 
 let weirdMultiDimList = [
   [1, 2,   
@@ -211,6 +216,8 @@ invalidProgramms =
   , "let False = True"
   , "let if = False"
   , "let len = 2"
+  , "let float = 1,2"
+  , "let float = 1. 2"
   ]
 
 

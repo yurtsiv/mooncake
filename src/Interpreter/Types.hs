@@ -7,6 +7,7 @@ type Scope = Map.Map String Result
 
 data Result
   = Integer Integer
+  | Float Double
   | String String
   | Bool Bool
   | List [Result]

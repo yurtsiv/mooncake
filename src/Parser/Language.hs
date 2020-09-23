@@ -60,4 +60,6 @@ reservedOp = T.reservedOp lexer
 
 integer = T.integer lexer
 
+float = T.float lexer
+
 whiteSpace = T.whiteSpace lexer

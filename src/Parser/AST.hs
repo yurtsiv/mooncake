@@ -3,6 +3,7 @@ module Parser.AST where
 data Expression =
   -- Literals
     Integer Integer
+  | Float Double
   | String String
   | Bool Bool
   | List [Expression]

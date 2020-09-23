@@ -112,7 +112,7 @@ end
 let apply = (f, val) do
   f(val)
 end
-
+  
 let eight = apply(mul(4), 2)
 ```
 
