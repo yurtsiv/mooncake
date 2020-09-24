@@ -2,6 +2,9 @@
   <img src="https://i.ibb.co/5hs2Ggg/mooncake-font-01.png" height="300px"/>
 </p>
 
+<br />
+<br />
+
 Mooncake is a functional, dynamic programming language.
 
 ### ❗ In early development. Any kind of proposals are welcome since there's nothing to break :)
