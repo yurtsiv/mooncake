@@ -209,3 +209,5 @@ stack test
 ```
 
 6. If tests succeed, create a PR
+
+Detailed explanation of [how to create a Pull Request](https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github).
