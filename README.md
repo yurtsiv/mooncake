@@ -136,7 +136,7 @@ wget -qO- https://get.haskellstack.org/ | sh
 **Clone the repo**
 
 ```
-git clone git@github.com:yurtsiv/mooncake.git && cd mooncake
+git clone https://github.com/yurtsiv/mooncake.git && cd mooncake
 ```
 
 **Build and install executable**
@@ -180,7 +180,7 @@ Feel free to create an issue or submit a PR (check out the development guide bel
 
 ## Development
 
-**Install** [Stack](https://docs.haskellstack.org/en/stable/README/)
+1. Install [Stack](https://docs.haskellstack.org/en/stable/README/)
 
 ```
 curl -sSL https://get.haskellstack.org/ | sh
@@ -192,20 +192,20 @@ or
 wget -qO- https://get.haskellstack.org/ | sh
 ```
 
-**Clone the repo**
+2. Fork the repo
+
+3. Make changes in the forked repo on a separate branch (name of the branch should briefly describe the issue)
+
+4. Play around with your changes
 
 ```
-git clone git@github.com:yurtsiv/mooncake.git
+stack run programm.mc
 ```
 
-**Run tests**
+5. Run tests
 
 ```
 stack test
 ```
 
-**Run a programm**
-
-```
-stack run hello.mc
-```
+6. If tests succeed, create a PR
