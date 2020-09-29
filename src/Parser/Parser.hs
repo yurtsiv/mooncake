@@ -98,6 +98,8 @@ parseBlock = do
    reserved "end"
    return $ Block exprs
 
+
+
 parseIf :: Parser Expression
 parseIf = do
    reserved "if"
@@ -138,6 +140,7 @@ operatorsTable =
      ]
    , [ prefixOp "!" (Inverse)
      , binaryOp "||" (Or) AssocRight
+     , binaryOp "/=" (NotEq) AssocRight
      ]
    , [ binaryOp ">" (Gt) AssocRight
      , binaryOp ">=" (GtE) AssocRight

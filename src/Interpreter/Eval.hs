@@ -75,6 +75,7 @@ evaluate (AST.GtE expr1 expr2) scope = evalNumCompOp (>=) expr1 expr2 scope
 evaluate (AST.Lt expr1 expr2) scope = evalNumCompOp (<) expr1 expr2 scope
 evaluate (AST.LtE expr1 expr2) scope = evalNumCompOp (<=) expr1 expr2 scope
 -- TODO: compare all primitive types
+evaluate (AST.NotEq expr1 expr2) scope = evalNumCompOp (/=) expr1 expr2 scope
 evaluate (AST.Eq expr1 expr2) scope = evalNumCompOp (==) expr1 expr2 scope
 evaluate (AST.Block exprs) scope = foldl evalCodeBlockItem (Right (Empty, scope)) exprs
 evaluate (AST.Concat expr1 expr2) scope = do

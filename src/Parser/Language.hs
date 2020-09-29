@@ -14,7 +14,8 @@ reservedNames =
     "else",
     "do",
     "end",
-    "then"
+    "then",
+    "while"
   ] ++ builtInFunctions
 
 reservedOpNames =
@@ -31,7 +32,8 @@ reservedOpNames =
     "!",
     "||",
     "&&",
-    "++"
+    "++",
+    "/="
   ]
 
 moonCakeDef =

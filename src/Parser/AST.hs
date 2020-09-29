@@ -42,6 +42,7 @@ data Expression =
   | Lt Expression Expression
   | LtE Expression Expression
   | Eq Expression Expression
+  | NotEq Expression Expression
 
   -- List/string operations
   | Concat Expression Expression
