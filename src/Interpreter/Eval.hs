@@ -135,7 +135,16 @@ evalLen (AST.FunctionCall _ callArgs) scope =
     _ ->
       Left "Wrong number of arguments provided for function 'len'"
 
-builtInFunctions = Map.fromList [("len", evalLen)]
+evalPring (AST.FunctionCall _ callArgs) scope = do
+  case callArgs of
+    [arg] -> do
+      (val, _) <- evaluate arg scope
+      print val
+      return Right $ (Empty, scope)
+    _ ->
+      Left "Wrong number of arguments provided for function 'len'"
+
+builtInFunctions = Map.fromList [("len", evalLen), ("print", evalPrint)]
 
 evalFuncCall name (Function closure argNames body) callArgs scope
   | (length callArgs) /= (length argNames) =
