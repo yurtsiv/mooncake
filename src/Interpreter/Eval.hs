@@ -117,7 +117,7 @@ evalNumCompOp op expr1 expr2 scope = do
   case (res1, res2) of
     (Integer val1, Integer val2) -> Right $ (Bool $ op val1 val2, scope)
     (Char c1, Char c2) -> Right $ (Bool $ op (toInteger . ord $ c1) (toInteger . ord $ c2), scope)
-    _ -> Left "Can compare only numbers"
+    _ -> Left "Can only compare two comparable types"
 
 flipNumber expr scope errMsg = do
   (val, _) <- evaluate expr scope
