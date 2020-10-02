@@ -62,4 +62,6 @@ integer = T.integer lexer
 
 float = T.float lexer
 
+charLiteral = T.charLiteral lexer
+
 whiteSpace = T.whiteSpace lexer
