@@ -76,6 +76,8 @@ let boolean = True
 
 let string = "Hello there!"
 
+let char = 'a'
+
 let function = (a, b) do
   a + b
 end
@@ -96,6 +98,13 @@ let gt = 4 > 2
 let gte = 4 >= 2
 let lt = 2 < 4
 let lte = 2 <= 4
+
+# Char Comparison
+let ceq = 'a' == 'a'
+let cgt = 'a' > 'b'
+let cgte = 'a' >= 'b'
+let clt = 'a' < 'b'
+let clte = 'a' <= 'b'
 
 # Boolean logic (not fully implemented yet)
 let false = !True
@@ -161,6 +170,7 @@ validProgramms =
   [ compoundValidProgramm
   , readmeExamples
   , "let a = - 1"
+  , "let a = 'a'"
   , "let e = 1 + 2 * x"
   , "let b = !(1 > a)"
   , "let b = \"hello\" == 1"
@@ -206,6 +216,9 @@ invalidProgramms =
 
   -- Missing comma
   , "let arr = [1 2]"
+
+  -- More than 1 char
+  , "let a = 'ab'"
 
   -- Not allowed identifiers
   , "let _noSpecSymbolsAtStart = 1"
