@@ -42,6 +42,9 @@ spec = do
     testProgramm "1 < 3" (Bool True)
     testProgramm "3 <= 3" (Bool True)
     testProgramm "3 == 2" (Bool False)
+    testProgramm "3 == 3" (Bool True)
+    testProgramm "3 /= 3" (Bool False)
+    testProgramm "3 /= 2" (Bool True)
 
   describe "more complex cases" $ do
     -- basic variable usage
