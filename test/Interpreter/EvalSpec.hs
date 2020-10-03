@@ -94,7 +94,7 @@ spec = do
       ]
     |]
 
-    testProgramm chars (List [Bool False, Bool True, Bool True, Bool False, Bool False, Bool True])
+    testCorrectProgramm chars (List [Bool False, Bool True, Bool True, Bool False, Bool False, Bool True])
 
     -- floats
     {-let floats = [r|
