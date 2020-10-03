@@ -199,14 +199,31 @@ validProgramms =
   ]
   
 invalidProgramms =
-  [ "let"
+  [ 
+
+  -- Invalid var declaration
+    "let"
   , "let val"
 
-  -- Missing closing quote
-  , "let string = \""
+  -- Invalid quotes
+  , "let string = \"hello"
+  , "let string = hello\""
+  , "let string = 'hello'"
+  , "let string = \"hello'"
+  , "let string = 'hello\""
 
-  -- Missing comma
+  -- Invalid comment
+  , "// wrong"
+
+  -- Missing or incorrect comma
   , "let arr = [1 2]"
+  , "let arr = [1, 2 3]"
+  , "let arr = [, 1, 2]"
+  , "let arr = [1, ,2]"
+
+  -- invalid float defs
+  , "let float = 1,2"
+  , "let float = 1. 2"
 
   -- Not allowed identifiers
   , "let _noSpecSymbolsAtStart = 1"
@@ -216,9 +233,11 @@ invalidProgramms =
   , "let True = False"
   , "let False = True"
   , "let if = False"
-  , "let len = 2"
-  , "let float = 1,2"
-  , "let float = 1. 2"
+  , "let then = 1"
+  , "let else = 1"
+  , "let len = 1"
+  , "let do = 1"
+  , "let end = 1"
   ]
 
 
