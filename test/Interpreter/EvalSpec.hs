@@ -64,24 +64,26 @@ spec = do
     testProgramm integers (Integer 4)
 
     -- floats
-    let floats = [r|
+    {-let floats = [r|
       let a = -1.2 
       let b = 1.2
 
       (+(-b + a))
     |]
+    -}
 
-    testProgramm floats (Float 1.4)
+    --testProgramm floats (Float 1.4)
 
     -- floats and ints
-    let floats = [r|
+    {-let floats = [r|
       let i = 2
       let f = 2.1
 
       i + f
     |]
+    -}
 
-    testProgramm floats (Float 4.1)
+    --testProgramm floats (Float 4.1)
 
     -- conditions
     let cond1 = [r|
