@@ -12,7 +12,7 @@ reservedNames =
     "False",
     "if",
     "else",
-    "else if"
+    "else if",
     "do",
     "end",
     "then",

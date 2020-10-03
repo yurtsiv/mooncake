@@ -52,6 +52,43 @@ spec = do
 
   describe "more complex cases" $ do
     -- basic variable usage
+
+
+    let condA = [r|
+      if 4 /= 3 then   
+        True    
+      end
+    |]
+
+    testProgramm condA (Bool True)
+
+
+    let condH = [r|
+      if 3 /= 3 then   
+        False    
+      end
+    |]
+
+    testProgramm condH (Empty)
+
+
+    let condZ = [r|
+      if 3 /= 4 then   
+        True    
+      end
+    |]
+
+    testProgramm condZ (Bool True)
+
+
+    let condX = [r|
+      if 0 /= 2 then
+        True
+      end
+    |]
+
+    testProgramm condX (Bool True)
+
     let vars = [r|
       let x = 1 + 2
       let y = x - 1
@@ -60,6 +97,7 @@ spec = do
 
     testProgramm vars (Integer 2)
 
+  
     -- integers
     let integers = [r|
       let a = 1 
@@ -98,10 +136,12 @@ spec = do
       end
     |]
 
-    testProgramm cond1 (Integer 1)
+
+
+    testProgramm cond1 (Empty)
 
     let cond2 = [r|
-      if False then
+      if 0 /= 2 then
         1
       end
     |]
@@ -138,6 +178,7 @@ spec = do
 
       add(1, 2) + a
     |]
+
 
     testProgramm funcs (Integer 13)
 
