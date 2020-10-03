@@ -9,8 +9,8 @@ import Interpreter.Eval
 import qualified Parser.AST as P
 import Parser.Parser
 
-testProgramm :: String -> Result -> Spec
-testProgramm programm expected =
+testCorrectProgramm :: String -> Result -> Spec
+testCorrectProgramm programm expected =
   it programm $ do
     case parseProgramm programm of
       Left err -> expectationFailure $ show err
@@ -38,21 +38,21 @@ testIncorrectProgramm programm =
 spec :: Spec
 spec = do
   describe "basic correct cases" $ do
-    testProgramm "1" (Integer 1)
-    testProgramm "True" (Bool True)
-    testProgramm "\"string\"" (String "string")
-    testProgramm "[1, 2, 3]" (List [Integer 1, Integer 2, Integer 3])
-    testProgramm "1 + 2" (Integer 3)
-    testProgramm "1 - 2" (Integer (-1))
-    testProgramm "6 / 3" (Integer (2))
-    testProgramm "2 * 2" (Integer (4))
-    testProgramm "5 % 2" (Integer (1))
+    testCorrectProgramm "1" (Integer 1)
+    testCorrectProgramm "True" (Bool True)
+    testCorrectProgramm "\"string\"" (String "string")
+    testCorrectProgramm "[1, 2, 3]" (List [Integer 1, Integer 2, Integer 3])
+    testCorrectProgramm "1 + 2" (Integer 3)
+    testCorrectProgramm "1 - 2" (Integer (-1))
+    testCorrectProgramm "6 / 3" (Integer (2))
+    testCorrectProgramm "2 * 2" (Integer (4))
+    testCorrectProgramm "5 % 2" (Integer (1))
 
-    testProgramm "1 > 2" (Bool False)
-    testProgramm "2 >= 2" (Bool True)
-    testProgramm "1 < 3" (Bool True)
-    testProgramm "3 <= 3" (Bool True)
-    testProgramm "3 == 2" (Bool False)
+    testCorrectProgramm "1 > 2" (Bool False)
+    testCorrectProgramm "2 >= 2" (Bool True)
+    testCorrectProgramm "1 < 3" (Bool True)
+    testCorrectProgramm "3 <= 3" (Bool True)
+    testCorrectProgramm "3 == 2" (Bool False)
 
   describe "more complex cases" $ do
     -- basic variable usage
@@ -62,7 +62,7 @@ spec = do
       y
     |]
 
-    testProgramm vars (Integer 2)
+    testCorrectProgramm vars (Integer 2)
 
     -- integers
     let integers = [r|
@@ -73,7 +73,7 @@ spec = do
       (+(-a - 3))
     |]
 
-    testProgramm integers (Integer 4)
+    testCorrectProgramm integers (Integer 4)
 
     -- floats
     {-let floats = [r|
@@ -84,7 +84,7 @@ spec = do
     |]
     -}
 
-    --testProgramm floats (Float 1.4)
+    --testCorrectProgramm floats (Float 1.4)
 
     -- floats and ints
     {-let floats = [r|
@@ -95,7 +95,7 @@ spec = do
     |]
     -}
 
-    --testProgramm floats (Float 4.1)
+    --testCorrectProgramm floats (Float 4.1)
 
     -- conditions
     let cond1 = [r|
@@ -104,7 +104,7 @@ spec = do
       end
     |]
 
-    testProgramm cond1 (Integer 1)
+    testCorrectProgramm cond1 (Integer 1)
 
     let cond2 = [r|
       if False then
@@ -112,7 +112,7 @@ spec = do
       end
     |]
 
-    testProgramm cond2 (Empty)
+    testCorrectProgramm cond2 (Empty)
 
     let cond3 = [r|
       if 0 > 2 then
@@ -122,7 +122,7 @@ spec = do
       end
     |]
 
-    testProgramm cond3 (Integer 0)
+    testCorrectProgramm cond3 (Integer 0)
 
     let cond4 = [r|
       if 1 + 1 == 2 then
@@ -132,7 +132,7 @@ spec = do
       end
     |]
 
-    testProgramm cond4 (Integer 1)
+    testCorrectProgramm cond4 (Integer 1)
 
     -- functions
     let funcs = [r|
@@ -145,7 +145,7 @@ spec = do
       add(1, 2) + a
     |]
 
-    testProgramm funcs (Integer 13)
+    testCorrectProgramm funcs (Integer 13)
 
     let fib10 = [r|
       let fib = (n) do
@@ -159,44 +159,44 @@ spec = do
       fib(10)
     |]
 
-    testProgramm fib10 (Integer 55)
+    testCorrectProgramm fib10 (Integer 55)
 
     -- concatenation
     let concat1 = [r|
       [] ++ [] 
     |]
 
-    testProgramm concat1 (List [])
+    testCorrectProgramm concat1 (List [])
 
     let concat2 = [r|
       [1] ++ [2] 
     |]
 
-    testProgramm concat2 (List [Integer 1, Integer 2])
+    testCorrectProgramm concat2 (List [Integer 1, Integer 2])
 
     let concat3 = [r|
       [1] ++ ["hello"] 
     |]
 
-    testProgramm concat3 (List [Integer 1, String "hello"])
+    testCorrectProgramm concat3 (List [Integer 1, String "hello"])
 
     let concat4 = [r|
       "hello" ++ " concatenation"
     |]
 
-    testProgramm concat4 (String "hello concatenation")
+    testCorrectProgramm concat4 (String "hello concatenation")
 
     let concat5 = [r|
       "hello" ++ [1]
     |]
 
-    testProgramm concat5 (List [String "h", String "e", String "l", String "l", String "o", Integer 1])
+    testCorrectProgramm concat5 (List [String "h", String "e", String "l", String "l", String "o", Integer 1])
 
     let concat6 = [r|
       [1] ++ "hello"
     |]
 
-    testProgramm concat6 (List [Integer 1, String "h", String "e", String "l", String "l", String "o"])
+    testCorrectProgramm concat6 (List [Integer 1, String "h", String "e", String "l", String "l", String "o"])
 
 
     -- len function
@@ -204,32 +204,32 @@ spec = do
       len([]) 
     |]
 
-    testProgramm len1 (Integer 0)
+    testCorrectProgramm len1 (Integer 0)
 
     let len2 = [r|
       len([1, 2, 3]) 
     |]
 
-    testProgramm len2 (Integer 3)
+    testCorrectProgramm len2 (Integer 3)
 
     let len3 = [r|
       len("") 
     |]
 
-    testProgramm len3 (Integer 0)
+    testCorrectProgramm len3 (Integer 0)
  
     let len4 = [r|
       len("hello") 
     |]
 
-    testProgramm len4 (Integer 5)
+    testCorrectProgramm len4 (Integer 5)
 
     -- bool operations
     let bool = [r|
       !(True && False || True && True)
     |]
 
-    testProgramm bool (Bool False)
+    testCorrectProgramm bool (Bool False)
 
 
     -- closure & shadowing
@@ -256,7 +256,7 @@ spec = do
       f2() + a + b
     |]
 
-    testProgramm closure (Integer 21)
+    testCorrectProgramm closure (Integer 21)
 
     -- higher order functions
     let hof = [r|
@@ -270,7 +270,7 @@ spec = do
       apply(mul(4), 2)
     |]
 
-    testProgramm hof (Integer 8)
+    testCorrectProgramm hof (Integer 8)
 
     let map = [r|
       let mapHelp = (list, func, index) do
@@ -288,7 +288,7 @@ spec = do
       map([1,2,3], add1)
     |]
 
-    testProgramm map (List [Integer 2, Integer 3, Integer 4])
+    testCorrectProgramm map (List [Integer 2, Integer 3, Integer 4])
 
     -- test for trying to call non-function or getting a length of non-list
     let badCall = [r|
