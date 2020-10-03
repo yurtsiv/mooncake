@@ -141,7 +141,7 @@ spec = do
     testProgramm cond1 (Empty)
 
     let cond2 = [r|
-      if 0 /= 2 then
+      if False then
         1
       end
     |]
