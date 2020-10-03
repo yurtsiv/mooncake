@@ -145,6 +145,7 @@ operatorsTable =
      , binaryOp "<=" (LtE) AssocRight
      ]
    , [ binaryOp "==" (Eq) AssocRight
+     , binaryOp "/=" (Neq) AssocRight
      , binaryOp "++" (Concat) AssocRight
      ]
    ]

@@ -92,6 +92,7 @@ let mod = 4 % 2
 
 # Comparison
 let eq = 2 == 2
+let neq = 2 /= 2
 let gt = 4 > 2
 let gte = 4 >= 2
 let lt = 2 < 4
@@ -118,7 +119,7 @@ let truth1 =
 
 # No elseif yet
 let truth2 =
-  if !(2 == 2) then
+  if 2 /= 2 then
     "2 is not equal to 2"
   else
     if 3 == 2 then
