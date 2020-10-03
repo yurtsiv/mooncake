@@ -23,6 +23,18 @@ testProgramm programm expected =
               False -> expectationFailure $ "Fail! Expected " ++ (show expected) ++ " and got " ++ (show res)
           Left err -> expectationFailure $ "Fail! " ++ (show err) ++ ". AST " ++ (show expr)
 
+
+testIncorrectProgramm :: String -> Spec
+testIncorrectProgramm programm =
+  it programm $ do
+    case parseProgramm programm of
+      Left err -> expectationFailure $ show err
+      Right expr -> 
+        let e = startEvaluation expr in
+        case e of
+          Left err -> putStrLn $ show err
+          Right res -> expectationFailure $ "Fail! Expected runtime error!"
+
 spec :: Spec
 spec = do
   describe "basic correct cases" $ do
@@ -277,3 +289,161 @@ spec = do
     |]
 
     testProgramm map (List [Integer 2, Integer 3, Integer 4])
+
+    -- test for calling a non-existant function
+    let badCall = [r|
+        let f = 7 
+        let val = 2 
+        f(val)
+    |]
+
+    testIncorrectProgramm badCall
+
+    -- test for using a non-boolean in the if condition
+    let badBoolean = [r|
+        if "this is a string" then
+            1
+        end
+    |]
+
+    testIncorrectProgramm badBoolean
+
+    -- test for using a non-boolean in the if-else condition
+    let badBooleanElse = [r|
+        if "this is a string" then
+            1
+        else
+            2
+        end
+    |]
+
+    testIncorrectProgramm badBooleanElse
+
+    -- test for using a non-declared variable
+    let badVar = [r|
+        let f = 7 
+        f + g 
+    |]
+
+    testIncorrectProgramm badVar
+
+    -- test for using infix '-' on non-integer
+    let badInfixM = [r|
+        let f = -"string"
+    |]
+
+    testIncorrectProgramm badInfixM
+
+    -- test for using infix '+' on non-integer
+    let badInfixP = [r|
+        let f = +"string"
+    |]
+
+    testIncorrectProgramm badInfixP
+
+    -- test for dividing by 0
+    let zeroDivision = [r|
+        let f = 42
+        let g = 0 
+        f / g
+    |]
+
+    testIncorrectProgramm zeroDivision
+
+    -- test for dividing by a non-integer 
+    let nonIntDivision = [r|
+        let f = 41
+        let g = "this is string"
+        f / g
+    |]
+
+    testIncorrectProgramm nonIntDivision
+
+    -- test for inverting a non-boolean
+    let nonBoolInvert = [r|
+        let f = 41
+        !f
+    |]
+
+    testIncorrectProgramm nonBoolInvert
+
+    -- test for invalid concatenation
+    let invalidConcat = [r|
+        let f = 41
+        let g = "my string"
+        g ++ f
+    |]
+
+    testIncorrectProgramm invalidConcat
+
+    -- test for algebraic op between non-numbers
+    let badAlgebraic = [r|
+        let f = 41
+        let g = True
+        f - g
+    |]
+
+    testIncorrectProgramm badAlgebraic
+
+    -- test for boolean op between non-booleans
+    let badBooleanOp = [r|
+        let f = False
+        let g = "string"
+        f && g
+    |]
+
+    testIncorrectProgramm badBooleanOp
+
+    -- test for comparison between non-integers
+    let badComp = [r|
+        let f = "string1"
+        let g = "string2"
+        f < g
+    |]
+
+    testIncorrectProgramm badComp
+
+    -- test for getting the length for invalid data type
+    let badLen = [r|
+        let f = 123
+        len(f)
+    |]
+
+    testIncorrectProgramm badLen
+
+    -- test for calling the 'len' function with more than 1 argument
+    let badLenArgs = [r|
+        let f = "str1"
+        let g = "str2"
+        len(f, g)
+    |]
+
+    testIncorrectProgramm badLenArgs
+
+    -- test for calling a user-defined function with invalid number of arguments
+    let badFuncArgs = [r|
+        let add = (x, y) do
+          let sum = x + y
+          sum
+        end
+
+        let z = add(1, 2, 3)
+    |]
+
+    testIncorrectProgramm badFuncArgs
+
+    -- test for accessing list elements with too many arguments
+    let longListArgs = [r|
+        let l = [10, 20, 30]
+        l(1, 2)
+    |]
+
+    testIncorrectProgramm longListArgs
+
+    -- test for accessing list elements past the bounds
+    let invalidListIndex = [r|
+        let l = [10, 20, 30]
+        l(3)
+    |]
+
+    testIncorrectProgramm invalidListIndex
