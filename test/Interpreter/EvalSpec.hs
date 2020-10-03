@@ -72,12 +72,17 @@ spec = do
       let a = 'a'
       let b = 'b'
 
-      a == b
-      a < b
-      a > b
-      a >= b
-      a <= b
+      [
+        a == b,
+        a /= b,
+        a < b,
+        a > b,
+        a >= b,
+        a <= b
+      ]
     |]
+
+    testProgramm chars (List [Bool False, Bool True, Bool True, Bool False, Bool False, Bool True])
 
     -- floats
     let floats = [r|
