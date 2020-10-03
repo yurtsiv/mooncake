@@ -40,6 +40,7 @@ spec = do
   describe "basic correct cases" $ do
     testCorrectProgramm "1" (Integer 1)
     testCorrectProgramm "True" (Bool True)
+    testCorrectProgramm "'a'" (Char 'a')
     testCorrectProgramm "\"string\"" (String "string")
     testCorrectProgramm "[1, 2, 3]" (List [Integer 1, Integer 2, Integer 3])
     testCorrectProgramm "1 + 2" (Integer 3)
@@ -53,6 +54,9 @@ spec = do
     testCorrectProgramm "1 < 3" (Bool True)
     testCorrectProgramm "3 <= 3" (Bool True)
     testCorrectProgramm "3 == 2" (Bool False)
+    testCorrectProgramm "3 == 3" (Bool True)
+    testCorrectProgramm "3 /= 3" (Bool False)
+    testCorrectProgramm "3 /= 2" (Bool True)
 
   describe "more complex cases" $ do
     -- basic variable usage
@@ -74,6 +78,23 @@ spec = do
     |]
 
     testCorrectProgramm integers (Integer 4)
+
+    -- chars
+    let chars = [r|
+      let a = 'a'
+      let b = 'b'
+
+      [
+        a == b,
+        a /= b,
+        a < b,
+        a > b,
+        a >= b,
+        a <= b
+      ]
+    |]
+
+    testProgramm chars (List [Bool False, Bool True, Bool True, Bool False, Bool False, Bool True])
 
     -- floats
     {-let floats = [r|

@@ -156,11 +156,11 @@ mooncake hello.mc
 Short-term
 
 - [ ] Floating point numbers
-- [ ] Character type
+- [x] Character type
 - [x] Boolean `or` & `and`
 - [x] List elements access (`list(0)`)
 - [ ] Built-in `print` function
-- [ ] `!=` operator
+- [x] `!=` operator
 - [x] Higher order functions
 - [ ] Better error reporting
 - [ ] Automatic function currying
