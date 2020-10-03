@@ -290,160 +290,232 @@ spec = do
 
     testProgramm map (List [Integer 2, Integer 3, Integer 4])
 
-    -- test for calling a non-existant function
+    -- test for trying to call non-function or getting a length of non-list
     let badCall = [r|
-        let f = 7 
-        let val = 2 
-        f(val)
+      let f = 7 
+      let val = 2 
+      f(val)
     |]
 
     testIncorrectProgramm badCall
 
     -- test for using a non-boolean in the if condition
-    let badBoolean = [r|
-        if "this is a string" then
-            1
-        end
+    let badConditionIf = [r|
+      if "this is a string" then
+        1
+      end
     |]
 
-    testIncorrectProgramm badBoolean
+    testIncorrectProgramm badConditionIf
 
     -- test for using a non-boolean in the if-else condition
-    let badBooleanElse = [r|
-        if "this is a string" then
-            1
-        else
-            2
-        end
+    let badConditionIfElse = [r|
+      if "this is a string" then
+        1
+      else
+        2
+      end
     |]
 
-    testIncorrectProgramm badBooleanElse
+    testIncorrectProgramm badConditionIfElse
 
     -- test for using a non-declared variable
     let badVar = [r|
-        let f = 7 
-        f + g 
+      let f = 7 
+      f + g 
     |]
 
     testIncorrectProgramm badVar
 
     -- test for using infix '-' on non-integer
     let badInfixM = [r|
-        let f = -"string"
+      let f = -"string"
     |]
 
     testIncorrectProgramm badInfixM
 
     -- test for using infix '+' on non-integer
     let badInfixP = [r|
-        let f = +"string"
+      let f = +"string"
     |]
 
     testIncorrectProgramm badInfixP
 
-    -- test for dividing by 0
-    let zeroDivision = [r|
-        let f = 42
-        let g = 0 
-        f / g
-    |]
-
-    testIncorrectProgramm zeroDivision
-
-    -- test for dividing by a non-integer 
-    let nonIntDivision = [r|
-        let f = 41
-        let g = "this is string"
-        f / g
-    |]
-
-    testIncorrectProgramm nonIntDivision
-
     -- test for inverting a non-boolean
     let nonBoolInvert = [r|
-        let f = 41
-        !f
+      let f = 41
+      !f
     |]
 
     testIncorrectProgramm nonBoolInvert
 
     -- test for invalid concatenation
     let invalidConcat = [r|
-        let f = 41
-        let g = "my string"
-        g ++ f
+      let f = 41
+      let g = "my string"
+      g ++ f
     |]
 
     testIncorrectProgramm invalidConcat
 
-    -- test for algebraic op between non-numbers
-    let badAlgebraic = [r|
-        let f = 41
-        let g = True
-        f - g
+    -- test for the '-' operation between non-numbers
+    let badAlgebraicMinus = [r|
+      let f = 41
+      let g = True
+      f - g
     |]
 
-    testIncorrectProgramm badAlgebraic
+    testIncorrectProgramm badAlgebraicMinus
 
-    -- test for boolean op between non-booleans
-    let badBooleanOp = [r|
-        let f = False
-        let g = "string"
-        f && g
+    -- test for the '+' operation between non-numbers
+    let badAlgebraicPlus = [r|
+      let f = 41
+      let g = True
+      f + g
     |]
 
-    testIncorrectProgramm badBooleanOp
+    testIncorrectProgramm badAlgebraicPlus
 
-    -- test for comparison between non-integers
-    let badComp = [r|
-        let f = "string1"
-        let g = "string2"
-        f < g
+    -- test for the '*' operation between non-numbers
+    let badAlgebraicMul = [r|
+      let f = 41
+      let g = True
+      f * g
     |]
 
-    testIncorrectProgramm badComp
+    testIncorrectProgramm badAlgebraicMul
+
+    -- test for the '%' operation between non-numbers
+    let badAlgebraicMod = [r|
+      let f = 41
+      let g = True
+      f % g
+    |]
+
+    testIncorrectProgramm badAlgebraicMod
+
+    -- test for the '/' operation between non-numbers
+    let badAlgebraicDiv = [r|
+      let f = 41
+      let g = True
+      f / g
+    |]
+
+    testIncorrectProgramm badAlgebraicDiv
+
+    -- test for dividing by 0
+    let zeroDivision = [r|
+      let f = 42
+      let g = 0 
+      f / g
+    |]
+
+    testIncorrectProgramm zeroDivision
+
+    -- test for the '&&' operation between non-booleans
+    let badBooleanAnd = [r|
+      let f = False
+      let g = "string"
+      f && g
+    |]
+
+    testIncorrectProgramm badBooleanAnd
+
+    -- test for the '||' operation between non-booleans
+    let badBooleanOr = [r|
+      let f = False
+      let g = "string"
+      f || g
+    |]
+
+    testIncorrectProgramm badBooleanOr
+
+    -- test for '==' comparison between non-integers
+    let badCompEq = [r|
+      let f = "string1"
+      let g = "string2"
+      f == g
+    |]
+
+    testIncorrectProgramm badCompEq
+
+    -- test for '<' comparison between non-integers
+    let badCompLt = [r|
+      let f = "string1"
+      let g = "string2"
+      f < g
+    |]
+
+    testIncorrectProgramm badCompLt
+
+    -- test for '<=' comparison between non-integers
+    let badCompLtE = [r|
+      let f = "string1"
+      let g = "string2"
+      f <= g
+    |]
+
+    testIncorrectProgramm badCompLtE
+
+    -- test for '>' comparison between non-integers
+    let badCompGt = [r|
+      let f = "string1"
+      let g = "string2"
+      f > g
+    |]
+
+    testIncorrectProgramm badCompGt
+
+    -- test for '>=' comparison between non-integers
+    let badCompGtE = [r|
+      let f = "string1"
+      let g = "string2"
+      f >= g
+    |]
+
+    testIncorrectProgramm badCompGtE
 
     -- test for getting the length for invalid data type
     let badLen = [r|
-        let f = 123
-        len(f)
+      let f = 123
+      len(f)
     |]
 
     testIncorrectProgramm badLen
 
     -- test for calling the 'len' function with more than 1 argument
     let badLenArgs = [r|
-        let f = "str1"
-        let g = "str2"
-        len(f, g)
+      let f = "str1"
+      let g = "str2"
+      len(f, g)
     |]
 
     testIncorrectProgramm badLenArgs
 
     -- test for calling a user-defined function with invalid number of arguments
     let badFuncArgs = [r|
-        let add = (x, y) do
-          let sum = x + y
-          sum
-        end
+      let add = (x, y) do
+        let sum = x + y
+        sum
+      end
 
-        let z = add(1, 2, 3)
+      let z = add(1, 2, 3)
     |]
 
     testIncorrectProgramm badFuncArgs
 
     -- test for accessing list elements with too many arguments
     let longListArgs = [r|
-        let l = [10, 20, 30]
-        l(1, 2)
+      let l = [10, 20, 30]
+      l(1, 2)
     |]
 
     testIncorrectProgramm longListArgs
 
     -- test for accessing list elements past the bounds
     let invalidListIndex = [r|
-        let l = [10, 20, 30]
-        l(3)
+      let l = [10, 20, 30]
+      l(3)
     |]
 
     testIncorrectProgramm invalidListIndex
