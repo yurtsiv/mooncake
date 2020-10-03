@@ -50,7 +50,7 @@ spec = do
     testProgramm "5 /= 5" (Bool False) 
 
 
-  describe "more complex cases" $ do
+  describe "More complex cases" $ do
     -- basic variable usage
 
 
