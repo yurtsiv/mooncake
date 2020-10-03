@@ -24,6 +24,11 @@ parseInt =  do
    i <- integer
    return $ Integer i
 
+parseChar :: Parser Expression
+parseChar = do
+   c <- charLiteral
+   return $ Char c
+
 parseFloat :: Parser Expression
 parseFloat = do
    f <- float
@@ -56,7 +61,7 @@ parseFunction = do
    args <- identifier `sepEndBy` (try listItemSep)
    whiteSpace
    char ')'
-   whiteSpace 
+   whiteSpace
    body <- parseBlock
    return $ Function args body
 
@@ -79,7 +84,7 @@ parseIdentifier = do
    return $ Identifier id
 
 parseLet :: Parser Expression
-parseLet = do 
+parseLet = do
    reserved "let"
    id <- identifier
    reservedOp "="
@@ -101,7 +106,7 @@ parseBlock = do
 parseIf :: Parser Expression
 parseIf = do
    reserved "if"
-   condition <- parseExpression 
+   condition <- parseExpression
    reserved "then"
    body <- parseExpression
    reserved "end"
@@ -110,7 +115,7 @@ parseIf = do
 parseIfElse :: Parser Expression
 parseIfElse = do
    reserved "if"
-   ifCond <- parseExpression 
+   ifCond <- parseExpression
    reserved "then"
    ifBody <- parseExpression
    whiteSpace
@@ -159,6 +164,7 @@ operatorTerm = do
          <|> try parseBool
          <|> try parseFloat
          <|> try parseInt
+         <|> try parseChar
          <|> try parseString
          <|> try parseList
    whiteSpace
@@ -178,6 +184,7 @@ parseExpression =
    <|> try parseString
    <|> try parseFloat
    <|> try parseInt
+   <|> try parseChar
    <|> try parseBool
    <|> try parseList
    <|> try parseLet

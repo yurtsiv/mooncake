@@ -28,6 +28,7 @@ spec = do
   describe "basic correct cases" $ do
     testProgramm "1" (Integer 1)
     testProgramm "True" (Bool True)
+    testProgramm "'a'" (Char 'a')
     testProgramm "\"string\"" (String "string")
     testProgramm "[1, 2, 3]" (List [Integer 1, Integer 2, Integer 3])
     testProgramm "1 + 2" (Integer 3)
@@ -65,6 +66,23 @@ spec = do
     |]
 
     testProgramm integers (Integer 4)
+
+    -- chars
+    let chars = [r|
+      let a = 'a'
+      let b = 'b'
+
+      [
+        a == b,
+        a /= b,
+        a < b,
+        a > b,
+        a >= b,
+        a <= b
+      ]
+    |]
+
+    testProgramm chars (List [Bool False, Bool True, Bool True, Bool False, Bool False, Bool True])
 
     -- floats
     let floats = [r|

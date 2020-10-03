@@ -6,12 +6,13 @@ data Expression =
   | Float Double
   | String String
   | Bool Bool
+  | Char Char
   | List [Expression]
 
   -- Functions
   | Function [String] Expression
   | FunctionCall String [Expression]
-  
+
   -- Conditionals
   | If Expression Expression
   | IfElse Expression Expression Expression
@@ -25,7 +26,7 @@ data Expression =
   -- Algebraic operations
   | Negative Expression
   | Positive Expression
-  | Add Expression Expression 
+  | Add Expression Expression
   | Sub Expression Expression
   | Div Expression Expression
   | Mul Expression Expression

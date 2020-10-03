@@ -1,5 +1,6 @@
 module Interpreter.Eval where
 
+import Data.Char (ord)
 import qualified Data.Map.Strict as Map
 import Interpreter.Utils
 import Interpreter.Types
@@ -13,6 +14,7 @@ startEvaluation expr = do
 
 evaluate :: AST.Expression -> Scope -> Either String (Result, Scope)
 evaluate (AST.Integer i) scope = Right $ (Integer i, scope)
+evaluate (AST.Char c) scope = Right $ (Char c, scope)
 evaluate (AST.String str) scope = Right $ (String str, scope)
 evaluate (AST.Bool bool) scope = Right $ (Bool bool, scope)
 evaluate (AST.List exprs) scope = do
@@ -70,13 +72,13 @@ evaluate (AST.Inverse expr) scope = do
     _ -> Left "Can invert only booleans"
 evaluate (AST.Or expr1 expr2) scope = evalBinBoolOp (||) expr1 expr2 scope
 evaluate (AST.And expr1 expr2) scope = evalBinBoolOp (&&) expr1 expr2 scope
-evaluate (AST.Gt expr1 expr2) scope = evalNumCompOp (>) expr1 expr2 scope
-evaluate (AST.GtE expr1 expr2) scope = evalNumCompOp (>=) expr1 expr2 scope
-evaluate (AST.Lt expr1 expr2) scope = evalNumCompOp (<) expr1 expr2 scope
-evaluate (AST.LtE expr1 expr2) scope = evalNumCompOp (<=) expr1 expr2 scope
+evaluate (AST.Gt expr1 expr2) scope = evalCompOp (>) expr1 expr2 scope
+evaluate (AST.GtE expr1 expr2) scope = evalCompOp (>=) expr1 expr2 scope
+evaluate (AST.Lt expr1 expr2) scope = evalCompOp (<) expr1 expr2 scope
+evaluate (AST.LtE expr1 expr2) scope = evalCompOp (<=) expr1 expr2 scope
 -- TODO: compare all primitive types
-evaluate (AST.Eq expr1 expr2) scope = evalNumCompOp (==) expr1 expr2 scope
-evaluate (AST.Neq expr1 expr2) scope = evalNumCompOp (/=) expr1 expr2 scope
+evaluate (AST.Eq expr1 expr2) scope = evalCompOp (==) expr1 expr2 scope
+evaluate (AST.Neq expr1 expr2) scope = evalCompOp (/=) expr1 expr2 scope
 evaluate (AST.Block exprs) scope = foldl evalCodeBlockItem (Right (Empty, scope)) exprs
 evaluate (AST.Concat expr1 expr2) scope = do
   (val1, _) <- evaluate expr1 scope
@@ -110,12 +112,13 @@ evalBinBoolOp op expr1 expr2 scope = do
     (Bool b1, Bool b2) -> Right $ (Bool (op b1 b2), scope)
     _ -> Left "Can perform operation only on booleans"
 
-evalNumCompOp op expr1 expr2 scope = do
+evalCompOp op expr1 expr2 scope = do
   (res1, _) <- evaluate expr1 scope
   (res2, _) <- evaluate expr2 scope
   case (res1, res2) of
     (Integer val1, Integer val2) -> Right $ (Bool $ op val1 val2, scope)
-    _ -> Left "Can compare only numbers"
+    (Char c1, Char c2) -> Right $ (Bool $ op (toInteger . ord $ c1) (toInteger . ord $ c2), scope)
+    _ -> Left "Can only compare two comparable types"
 
 flipNumber expr scope errMsg = do
   (val, _) <- evaluate expr scope
