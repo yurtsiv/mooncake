@@ -24,6 +24,11 @@ parseInt =  do
    i <- integer
    return $ Integer i
 
+parseChar :: Parser Expression
+parseChar = do
+   c <- charLiteral
+   return $ Char c
+
 parseFloat :: Parser Expression
 parseFloat = do
    f <- float
@@ -143,6 +148,7 @@ operatorsTable =
      , binaryOp "<=" LtE AssocRight
      ]
    , [ binaryOp "==" Eq AssocRight
+     , binaryOp "/=" Neq AssocRight
      , binaryOp "++" Concat AssocRight
      ]
    ]
@@ -156,6 +162,7 @@ operatorTerm = do
          <|> try parseBool
          <|> try parseFloat
          <|> try parseInt
+         <|> try parseChar
          <|> try parseString
          <|> try parseList
    whiteSpace
@@ -175,6 +182,7 @@ parseExpression =
    <|> try parseString
    <|> try parseFloat
    <|> try parseInt
+   <|> try parseChar
    <|> try parseBool
    <|> try parseList
    <|> try parseLet

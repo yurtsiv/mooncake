@@ -76,6 +76,8 @@ let boolean = True
 
 let string = "Hello there!"
 
+let char = 'a'
+
 let function = (a, b) do
   a + b
 end
@@ -92,10 +94,18 @@ let mod = 4 % 2
 
 # Comparison
 let eq = 2 == 2
+let neq = 2 /= 2
 let gt = 4 > 2
 let gte = 4 >= 2
 let lt = 2 < 4
 let lte = 2 <= 4
+
+# Char Comparison
+let ceq = 'a' == 'a'
+let cgt = 'a' > 'b'
+let cgte = 'a' >= 'b'
+let clt = 'a' < 'b'
+let clte = 'a' <= 'b'
 
 # Boolean logic (not fully implemented yet)
 let false = !True
@@ -118,7 +128,7 @@ let truth1 =
 
 # No elseif yet
 let truth2 =
-  if !(2 == 2) then
+  if 2 /= 2 then
     "2 is not equal to 2"
   else
     if 3 == 2 then
@@ -161,6 +171,7 @@ validProgramms =
   [ compoundValidProgramm
   , readmeExamples
   , "let a = - 1"
+  , "let a = 'a'"
   , "let e = 1 + 2 * x"
   , "let b = !(1 > a)"
   , "let b = \"hello\" == 1"
@@ -198,14 +209,34 @@ validProgramms =
   ]
   
 invalidProgramms =
-  [ "let"
+  [ 
+
+  -- Invalid var declaration
+    "let"
   , "let val"
 
-  -- Missing closing quote
-  , "let string = \""
+  -- Invalid quotes
+  , "let string = \"hello"
+  , "let string = hello\""
+  , "let string = 'hello'"
+  , "let string = \"hello'"
+  , "let string = 'hello\""
 
-  -- Missing comma
+  -- Invalid comment
+  , "// wrong"
+
+  -- Missing or incorrect comma
   , "let arr = [1 2]"
+  , "let arr = [1, 2 3]"
+  , "let arr = [, 1, 2]"
+  , "let arr = [1, ,2]"
+
+  -- invalid float defs
+  , "let float = 1,2"
+  , "let float = 1. 2"
+
+  -- More than 1 char
+  , "let a = 'ab'"
 
   -- Not allowed identifiers
   , "let _noSpecSymbolsAtStart = 1"
@@ -215,9 +246,11 @@ invalidProgramms =
   , "let True = False"
   , "let False = True"
   , "let if = False"
-  , "let len = 2"
-  , "let float = 1,2"
-  , "let float = 1. 2"
+  , "let then = 1"
+  , "let else = 1"
+  , "let len = 1"
+  , "let do = 1"
+  , "let end = 1"
   ]
 
 
