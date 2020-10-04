@@ -49,7 +49,7 @@ parseList :: Parser Expression
 parseList = do
    char '['
    whiteSpace
-   items <- parseExpression `sepEndBy` (try listItemSep)
+   items <- parseExpression `sepEndBy` try listItemSep
    whiteSpace
    char ']'
    return $ List items
@@ -66,7 +66,7 @@ parseFunction = do
    return $ Function args body
 
 parseBuiltInFunctionName :: Parser String
-parseBuiltInFunctionName = (choice $ map string builtInFunctions)
+parseBuiltInFunctionName = choice $ map string builtInFunctions
 
 parseFunctionCall :: Parser Expression
 parseFunctionCall = do
@@ -79,9 +79,7 @@ parseFunctionCall = do
    return $ FunctionCall id args
 
 parseIdentifier :: Parser Expression
-parseIdentifier = do
-   id <- identifier
-   return $ Identifier id
+parseIdentifier = Identifier <$> identifier
 
 parseLet :: Parser Expression
 parseLet = do
@@ -129,29 +127,29 @@ prefixOp name fun = Prefix (do{ reservedOp name; return fun })
 
 operatorsTable =
    [
-     [ prefixOp "-" (Negative)
-     , prefixOp "+" (Positive)
+     [ prefixOp "-" Negative
+     , prefixOp "+" Positive
      ]
-   , [ binaryOp "*" (Mul) AssocRight
-     , binaryOp "/" (Div) AssocRight
-     , binaryOp "%" (Modulo) AssocRight
+   , [ binaryOp "*" Mul AssocRight
+     , binaryOp "/" Div AssocRight
+     , binaryOp "%" Modulo AssocRight
      ]
-   , [ binaryOp "+" (Add) AssocRight
-     , binaryOp "-" (Sub) AssocRight
+   , [ binaryOp "+" Add AssocRight
+     , binaryOp "-" Sub AssocRight
      ]
-   , [ binaryOp "&&" (And) AssocRight
+   , [ binaryOp "&&" And AssocRight
      ]
-   , [ prefixOp "!" (Inverse)
-     , binaryOp "||" (Or) AssocRight
+   , [ prefixOp "!" Inverse
+     , binaryOp "||" Or AssocRight
      ]
-   , [ binaryOp ">" (Gt) AssocRight
-     , binaryOp ">=" (GtE) AssocRight
-     , binaryOp "<" (Lt) AssocRight
-     , binaryOp "<=" (LtE) AssocRight
+   , [ binaryOp ">" Gt AssocRight
+     , binaryOp ">=" GtE AssocRight
+     , binaryOp "<" Lt AssocRight
+     , binaryOp "<=" LtE AssocRight
      ]
-   , [ binaryOp "==" (Eq) AssocRight
-     , binaryOp "/=" (Neq) AssocRight
-     , binaryOp "++" (Concat) AssocRight
+   , [ binaryOp "==" Eq AssocRight
+     , binaryOp "/=" Neq AssocRight
+     , binaryOp "++" Concat AssocRight
      ]
    ]
 
