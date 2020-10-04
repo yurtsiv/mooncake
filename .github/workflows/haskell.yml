@@ -8,12 +8,12 @@ on:
 
 jobs:
   review:
-    name: Install Stack
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
-      - name: Run tests
-        run:  stack test
       - name: Run build
         run:  stack build
+      - name: Run tests
+        run:  stack test
+
