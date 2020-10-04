@@ -5,6 +5,8 @@
 <br />
 <br />
 
+![Lint Review](https://github.com/yurtsiv/mooncake/workflows/Review/badge.svg)
+
 Mooncake is a functional, dynamic programming language.
 
 ### ❗ In early development. Any kind of proposals are welcome since there's nothing to break :)
