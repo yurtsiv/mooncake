@@ -1,0 +1,21 @@
+name: Review
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  review:
+    name: Install Stack
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Install Stack
+        run:  curl -sSL https://get.haskellstack.org/ | sh
+      - name: Run tests
+        run:  stack test
+      - name: Run build
+        run:  stack build
