@@ -9,7 +9,7 @@
 
 Mooncake is a functional, dynamic programming language.
 
-### ❗ In early development. Any kind of proposals are welcome since there's nothing to break :)
+### ❗ A hobby project
 
 ## Tutorial
 
